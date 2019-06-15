@@ -7,26 +7,44 @@ If you run the Dockerfile with no arguments you will get a single instance of Sp
 
 # Usage
 Single instance with no persistence 
+
 `docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 --name splunk atunnecliffe/splunk`
 
 Single instance with indexed data persistence
+
 `docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -v /mnt/mysplunkdata:/opt/splunk/var --name splunk atunnecliffe/splunk`
 
 # Arguments
-`DOWNLOAD_URL` is a direct link to download the .DEB file of your desired release obtained from the "download via WGET" button on the website. This Dockerfile is compatible with versions newer than 7.1.1. Currently defaults to version 7.2.6. 
+`DOWNLOAD_URL` 
 
-`ARG SPLUNK_CLI_ARGS` What args do you want Splunk to start with every time it opens? Defaults to `--accept-license --no-prompt`, without both of these Splunk will fail to start automatically as it will be waiting for user input. 
+is a direct link to download the .DEB file of your desired release obtained from the "download via WGET" button on the website. This Dockerfile is compatible with versions newer than 7.1.1. Currently defaults to version 7.2.6. 
 
-`ADMIN_PASSWORD` Sets the default "admin" user account password. Defaults to `changeme2019`
+`ARG SPLUNK_CLI_ARGS` 
 
-`LICENSE_MASTER` [[NOT YET IMPLEMENTED]]
+What args do you want Splunk to start with every time it opens? Defaults to `--accept-license --no-prompt`, without both of these Splunk will fail to start automatically as it will be waiting for user input. 
 
-`FORWARD_DESTINATION` [[NOT_YET_IMPLEMENTED]]
+`ADMIN_PASSWORD` 
 
-`SEARCH_PEERS` [[NOT YET IMPLEMENTED]]
+Sets the default "admin" user account password. Defaults to `changeme2019`
+
+`LICENSE_MASTER` 
+
+[[NOT YET IMPLEMENTED]]
+
+`FORWARD_DESTINATION` 
+
+[[NOT_YET_IMPLEMENTED]]
+
+`SEARCH_PEERS` 
+
+[[NOT YET IMPLEMENTED]]
 
 # Volumes
 
-`/opt/splunk/var` Mount this to gain a persistent install for a standalone instance. This is where indexed data is stored. 
+`/opt/splunk/var` 
 
-`/data` For ingesting whatever data from a "local" source. Could potentially map to the root of your external syslog server.
+Mount this to gain a persistent install for a standalone instance. This is where indexed data is stored. 
+
+`/data` 
+
+For ingesting whatever data from a "local" source. Could potentially map to the root of your external syslog server.
