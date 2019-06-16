@@ -37,8 +37,9 @@ RUN echo "[user_info]\n\
 USERNAME = admin\n\
 PASSWORD = ${ADMIN_PASSWORD}" > $SPLUNK_HOME/etc/system/local/user-seed.conf
 
-# Add given args and configure startup
+# Install apps and configure startup
 RUN echo "#!/bin/sh\n\
+yes | cp -rf /apps/* /opt/splunk/etc/apps\n\
 /opt/splunk/bin/splunk start ${SPLUNK_CLI_ARGS}\n\
 exit 0" > /etc/rc.local
 RUN chmod +x /etc/rc.local
@@ -48,4 +49,4 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Set up ports and volumes
 EXPOSE 8000 8089 9997
-VOLUME ["/opt/splunk/var", "/data", "/license"]
+VOLUME ["/opt/splunk/var", "/data", "/apps"]
