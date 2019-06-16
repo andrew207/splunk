@@ -1,7 +1,7 @@
 # Splunk 
 This is a Dockerfile for Splunk - https://www.splunk.com
 
-It is designed to make it simple to deploy a single instance of Splunk, or a Search Head / Heavy Forwarder in an enterprise environment. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089. 
+It is designed to make it simple to deploy Splunk and parse in any custom apps you want through a volume. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089. 
 
 If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.2.6 with the user admin:changeme2019. 
 
@@ -13,6 +13,10 @@ Single instance with no persistence
 Single instance with indexed data persistence
 
 `docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -v /mnt/mysplunkdata:/opt/splunk/var --name splunk atunnecliffe/splunk`
+
+Splunk that auto-installs all apps from volume. 
+
+`docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -v /splunkconfig/heavyforwarder:/apps --name splunk atunnecliffe/splunk`
 
 # Arguments
 `DOWNLOAD_URL` 
@@ -27,23 +31,16 @@ What args do you want Splunk to start with every time it opens? Defaults to `--a
 
 Sets the default "admin" user account password. Defaults to `changeme2019`
 
-`LICENSE_MASTER` 
-
-[[NOT YET IMPLEMENTED]]
-
-`FORWARD_DESTINATION` 
-
-[[NOT_YET_IMPLEMENTED]]
-
-`SEARCH_PEERS` 
-
-[[NOT YET IMPLEMENTED]]
 
 # Volumes
 
+`/apps`
+
+The contents of this directory is forcefully copied into /opt/splunk/etc/apps on container startup. Use this volume to place all your the apps you want pre-installed. 
+
 `/opt/splunk/var` 
 
-Mount this to gain a persistent install for a standalone instance. This is where indexed data is stored. 
+Mount this to gain a persistent install for a standalone instance, or an indexer. This is where indexed data is stored. 
 
 `/data` 
 
