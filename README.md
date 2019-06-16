@@ -1,7 +1,7 @@
 # Splunk 
 This is a Dockerfile for Splunk - https://www.splunk.com
 
-It is designed to make it simple to deploy Splunk and parse in any custom apps you want through a volume. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089. 
+It is designed to deploy Splunk and auto-install any custom apps you want through a volume. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089. 
 
 If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.2.6 with the user admin:changeme2019. 
 
