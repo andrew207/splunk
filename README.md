@@ -29,7 +29,7 @@ What args do you want Splunk to start with every time it opens? Defaults to `--a
 
 `ADMIN_PASSWORD` 
 
-Sets the default "admin" user account password. Defaults to `changeme2019`
+Sets the default "admin" user account password. Defaults to `changeme2019`. You can change this through the web interface once the container is running. 
 
 
 # Volumes
