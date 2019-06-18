@@ -32,7 +32,7 @@ RUN dpkg -i /splunkenterprise.deb
 # Fix "unusable filesystem" when Splunkd tries to create files
 RUN printf "\nOPTIMISTIC_ABOUT_FILE_LOCKING = 1\n" >> $SPLUNK_HOME/etc/splunk-launch.conf
 
-# Configure default user
+# Configure default admin user
 RUN echo "[user_info]\n\
 USERNAME = admin\n\
 PASSWORD = ${ADMIN_PASSWORD}" > $SPLUNK_HOME/etc/system/local/user-seed.conf
