@@ -17,6 +17,10 @@ CMD ["/sbin/my_init"]
 ARG DOWNLOAD_URL=https://www.splunk.com/page/download_track?file=7.2.6/linux/splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb&ac=&wget=true&name=wget&platform=Linux&architecture=x86_64&version=7.2.6&product=splunk&typed=release
 ARG SPLUNK_CLI_ARGS="--accept-license --no-prompt"
 ARG ADMIN_PASSWORD=changeme2019
+ARG IS_UNRAID=false
+
+# If we are on unRAID, configure 'nobody' to match unRAID's settings for ease of volume editing
+RUN if [ "x$IS_UNRAID" = "x" ] ; then echo "not unRAID, no usermod needed." ; else usermod -u 99 nobody && usermod -g 100 nobody && usermod -d /home nobody && chown -R nobody:users /home ; fi
 
 # Disable SSH
 RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
@@ -26,7 +30,7 @@ RUN apt-get update -q
 RUN apt-get install -y wget
 
 # Download and install Splunk Enterprise
-RUN wget -O splunkenterprise.deb ${DOWNLOAD_URL}
+RUN wget -q -O splunkenterprise.deb ${DOWNLOAD_URL}
 RUN dpkg -i /splunkenterprise.deb
 
 # Fix "unusable filesystem" when Splunkd tries to create files
