@@ -18,6 +18,10 @@ Splunk that auto-installs all apps from volume.
 
 `docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -v /splunkconfig/heavyforwarder:/apps --name splunk atunnecliffe/splunk`
 
+Splunk on unRAID with indexed data persistence
+
+`docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 --build-arg IS_UNRAID=true -v /mnt/user/appdata/splunk:/opt/splunk/var --name splunk atunnecliffe/splunk`
+
 # Arguments
 `DOWNLOAD_URL` 
 
@@ -31,6 +35,9 @@ What args do you want Splunk to start with every time it opens? Defaults to `--a
 
 Sets the default "admin" user account password. Defaults to `changeme2019`. You can change this through the web interface once the container is running. 
 
+`IS_UNRAID` 
+
+Defaults to `false`, set to `true` if you're running on unRAID. This just fixes up permissions of the 'nobody' user to match unRAID so you don't run in to permissions issues when editing data in volumes. 
 
 # Volumes
 
