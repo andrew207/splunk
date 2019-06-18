@@ -18,10 +18,6 @@ Splunk that auto-installs all apps from volume.
 
 `docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -v /splunkconfig/heavyforwarder:/apps --name splunk atunnecliffe/splunk`
 
-Splunk on unRAID with indexed data persistence
-
-`docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 --build-arg IS_UNRAID=true -v /mnt/user/appdata/splunk:/opt/splunk/var --name splunk atunnecliffe/splunk`
-
 # Arguments
 `DOWNLOAD_URL` 
 
