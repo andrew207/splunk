@@ -14,13 +14,16 @@ ENV LANGUAGE en_GB.UTF-8
 CMD ["/sbin/my_init"]
 
 # ARGS
-ARG DOWNLOAD_URL=https://www.splunk.com/page/download_track?file=7.2.6/linux/splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb&ac=&wget=true&name=wget&platform=Linux&architecture=x86_64&version=7.2.6&product=splunk&typed=release
+ARG DOWNLOAD_URL=https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.3.0&product=splunk&filename=splunk-7.3.0-657388c7a488-linux-2.6-amd64.deb&wget=true
 ARG SPLUNK_CLI_ARGS="--accept-license --no-prompt"
 ARG ADMIN_PASSWORD=changeme2019
 ARG IS_UNRAID=false
 
-# If we are on unRAID, configure 'nobody' to match unRAID's settings for ease of volume editing
-RUN if [ "x$IS_UNRAID" = "x" ] ; then echo "not unRAID, no usermod needed." ; else usermod -u 99 nobody && usermod -g 100 nobody && usermod -d /home nobody && chown -R nobody:users /home ; fi
+# ENVS based on ARGS (so you can configure either at build time or runtime)
+ENV DOWNLOAD_URL $DOWNLOAD_URL
+ENV SPLUNK_CLI_ARGS $SPLUNK_CLI_ARGS
+ENV ADMIN_PASSWORD $ADMIN_PASSWORD
+ENV IS_UNRAID $IS_UNRAID
 
 # Disable SSH
 RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
@@ -29,24 +32,10 @@ RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
 RUN apt-get update -q
 RUN apt-get install -y wget
 
-# Download and install Splunk Enterprise
-RUN wget -q -O splunkenterprise.deb ${DOWNLOAD_URL}
-RUN dpkg -i /splunkenterprise.deb
-
-# Fix "unusable filesystem" when Splunkd tries to create files
-RUN printf "\nOPTIMISTIC_ABOUT_FILE_LOCKING = 1\n" >> $SPLUNK_HOME/etc/splunk-launch.conf
-
-# Configure default admin user
-RUN echo "[user_info]\n\
-USERNAME = admin\n\
-PASSWORD = ${ADMIN_PASSWORD}" > $SPLUNK_HOME/etc/system/local/user-seed.conf
-
-# Install apps and configure startup
-RUN echo "#!/bin/sh\n\
-yes | cp -rf /apps/* /opt/splunk/etc/apps\n\
-/opt/splunk/bin/splunk start ${SPLUNK_CLI_ARGS}\n\
-exit 0" > /etc/rc.local
-RUN chmod +x /etc/rc.local
+# Set up autostarts
+RUN mkdir -p /etc/my_init.d
+COPY 50_gosplunk.init /etc/my_init.d/50_gosplunk.init
+RUN chmod +x /etc/my_init.d/50_gosplunk.init
 
 # Clean up APT
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
