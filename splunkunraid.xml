@@ -20,12 +20,12 @@ First start will take a while because Splunk will need to be downloaded (300MB o
 Compatible with Splunk 7.1.0 and newer.</Overview>
   <Category>Tools: Network:Management Status:Stable</Category>
   <WebUI>http://[ip]:8000</WebUI>
-  <TemplateURL/>
+  <TemplateURL>https://raw.githubusercontent.com/andrew207/splunk/master/splunkunraid.xml</TemplateURL>
   <Icon>https://secure.gravatar.com/avatar/c4cadc82a16e67018f57f1fc2547caa4.jpg?s=80&amp;amp;r=g&amp;amp;d=mm</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
-  <DateInstalled>1560923836</DateInstalled>
+  <DateInstalled>1560923958</DateInstalled>
   <DonateText>Donate to Dockerfile author via PayPal</DonateText>
   <DonateLink>https://paypal.me/atunnecliffe</DonateLink>
   <Description>This is a Dockerfile for Splunk - https://www.splunk.com&#xD;
