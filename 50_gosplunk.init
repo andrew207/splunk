@@ -3,10 +3,10 @@
 # If Splunk is not downloaded (or wants a different version), download/install it.
 # assumes string in the format "splunk-<version>-" exists in the URL
 FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'`
-if test -f "$FILE"; then
-  echo "$FILE exists, no need to download again."
+if test -f "$FILE.deb"; then
+  echo "$FILE.deb exists, no need to download again."
 else
-  echo "$FILE does not exist, downloading and installing/upgrading."
+  echo "$FILE.deb does not exist, downloading and installing/upgrading."
   wget -q -O $FILE.deb $DOWNLOAD_URL
   dpkg -i $FILE.deb
 fi
