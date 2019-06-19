@@ -3,7 +3,11 @@ This is a Dockerfile for Splunk - https://www.splunk.com
 
 It is designed to deploy Splunk and auto-install any custom apps you want through a volume. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089. 
 
-If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.2.6 with the user admin:changeme2019. 
+If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.3.0 with the user admin:changeme2019. 
+
+First start will take a while because Splunk will need to be downloaded (300MB or so). Check 50_gosplunk.init if you want to see how it starts up.
+
+Compatible with Splunk 7.1.0 and newer. 
 
 # Usage
 Single instance with no persistence 
@@ -17,6 +21,10 @@ Single instance with indexed data persistence
 Splunk that auto-installs all apps from volume. 
 
 `docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -v /splunkconfig/heavyforwarder:/apps --name splunk atunnecliffe/splunk`
+
+Install an older version (7.2.6) and change admin password
+
+`docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -e ADMIN_PASSWORD="mynewpassword" -e DOWNLOAD_URL="https://www.splunk.com/page/download_track?file=7.2.6/linux/splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb&ac=&wget=true&name=wget&platform=Linux&architecture=x86_64&version=7.2.6&product=splunk&typed=release" -p 8000:8000 --name splunk splunk`
 
 # Arguments
 `DOWNLOAD_URL` 
