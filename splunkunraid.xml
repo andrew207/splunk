@@ -19,7 +19,7 @@ First start will take a while because Splunk will need to be downloaded (300MB o
 &#xD;
 Compatible with Splunk 7.1.0 and newer.</Overview>
   <Category>Tools: Network:Management Status:Stable</Category>
-  <WebUI>http://[ip]:8000</WebUI>
+  <WebUI>http://[IP]:8000</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/andrew207/splunk/master/splunkunraid.xml</TemplateURL>
   <Icon>https://secure.gravatar.com/avatar/c4cadc82a16e67018f57f1fc2547caa4.jpg?s=80&amp;amp;r=g&amp;amp;d=mm</Icon>
   <ExtraParams/>
