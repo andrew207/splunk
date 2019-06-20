@@ -7,7 +7,7 @@
   <MyIP/>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Support/>
+  <Support>https://forums.unraid.net/topic/80995-support-atunnecliffe-splunk/</Support>
   <Project>https://www.splunk.com/</Project>
   <Overview>This is a Dockerfile for Splunk - https://www.splunk.com&#xD;
 &#xD;
