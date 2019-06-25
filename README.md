@@ -31,7 +31,7 @@ Install an older version (7.2.6) and change admin password
 
 is a direct link to download the .DEB file of your desired release obtained from the "download via WGET" button on the website. This Dockerfile is compatible with versions newer than 7.1.1. Currently defaults to version 7.2.6. 
 
-`ARG SPLUNK_CLI_ARGS` 
+`SPLUNK_CLI_ARGS` 
 
 What args do you want Splunk to start with every time it opens? Defaults to `--accept-license --no-prompt`, without both of these Splunk will fail to start automatically as it will be waiting for user input. 
 
