@@ -59,7 +59,7 @@ Compatible with Splunk 7.1.0 and newer.</Description>
   </Networking>
   <Data>
     <Volume>
-      <HostDir>/mnt/disks/Kingston240SSD/splunk/var/</HostDir>
+      <HostDir>/mnt/user/appdata/splunk/var</HostDir>
       <ContainerDir>/opt/splunk/var</ContainerDir>
       <Mode>rw</Mode>
     </Volume>
