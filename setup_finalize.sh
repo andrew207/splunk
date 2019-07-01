@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-source /image_build/buildconfig
+source /tmp/buildconfig
 
 header "Finalizing..."
 

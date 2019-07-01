@@ -3,10 +3,10 @@ FROM phusion/baseimage:0.11
 MAINTAINER atunnecliffe <andrew@atunnecliffe.com>
 
 # Make Phusion work as nonroot for OpenShift compatibility
-RUN mkdir -p /tmp/my_init.d
-COPY setup.sh /tmp/my_init.d/setup.sh
-RUN chmod +x /tmp/my_init.d/setup.sh
-RUN /tmp/my_init.d/setup.sh
+RUN mkdir -p /tmp/
+COPY . /tmp
+RUN chmod +x /tmp/setup.sh
+RUN /tmp/setup.sh
 
 # Set environment variables
 ENV HOME /root
