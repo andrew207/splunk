@@ -2,6 +2,10 @@
 FROM phusion/baseimage:0.11
 MAINTAINER atunnecliffe <andrew@atunnecliffe.com>
 
+# Make Phusion work as nonroot for OpenShift compatibility
+ADD . /image_build
+RUN /image_build/setup.sh
+
 # Set environment variables
 ENV HOME /root
 ENV SPLUNK_HOME /opt/splunk
