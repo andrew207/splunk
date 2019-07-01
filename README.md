@@ -14,10 +14,6 @@ Single instance with no persistence
 
 `docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 --name splunk atunnecliffe/splunk`
 
-Single instance with indexed data persistence
-
-`docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -v /mnt/mysplunkdata:/opt/splunk/var --name splunk atunnecliffe/splunk`
-
 Splunk that auto-installs all apps from volume. 
 
 `docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -v /splunkconfig/heavyforwarder:/apps --name splunk atunnecliffe/splunk`
@@ -48,11 +44,3 @@ Defaults to `false`, set to `true` if you're running on unRAID. This just fixes 
 `/apps`
 
 The contents of this directory is forcefully copied into /opt/splunk/etc/apps on container startup. Use this volume to place all your the apps you want pre-installed. 
-
-`/opt/splunk/var` 
-
-Mount this to gain a persistent install for a standalone instance, or an indexer. This is where indexed data is stored. 
-
-`/data` 
-
-For ingesting whatever data from a "local" source. Could potentially map to the root of your external syslog server.
