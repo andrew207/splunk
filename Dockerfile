@@ -1,4 +1,4 @@
-# Grab base Phusion
+# Grab base Alpine
 FROM alpine:3.10.0
 MAINTAINER atunnecliffe <andrew@atunnecliffe.com>
 
