@@ -19,7 +19,8 @@ ENV LANGUAGE en_GB.UTF-8
 # Run baseimage init
 CMD ["/sbin/my_init","--","setuser","app","bash"]
 CMD ["/sbin/my_init"]
-RUN chmod 755 /etc/container_environment
+RUN find /etc/container_environment -type d -exec chmod 755 {} \;
+RUN find /etc/container_environment -type f -exec chmod 644 {} \;
 RUN chmod 644 /etc/container_environment.sh /etc/container_environment.json
 
 # ARGS
