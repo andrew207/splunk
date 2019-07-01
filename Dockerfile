@@ -1,5 +1,5 @@
 # Grab base Phusion
-FROM phusion/baseimage:0.11
+FROM phusion/baseimage:0.9.19
 MAINTAINER atunnecliffe <andrew@atunnecliffe.com>
 
 # Make Phusion work as nonroot for OpenShift compatibility
