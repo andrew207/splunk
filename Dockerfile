@@ -17,7 +17,10 @@ ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB.UTF-8
 
 # Run baseimage init
+CMD ["/sbin/my_init","--","setuser","app","bash"]
 CMD ["/sbin/my_init"]
+RUN chmod 755 /etc/container_environment
+RUN chmod 644 /etc/container_environment.sh /etc/container_environment.json
 
 # ARGS
 ARG DOWNLOAD_URL=https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.3.0&product=splunk&filename=splunk-7.3.0-657388c7a488-linux-2.6-amd64.deb&wget=true
