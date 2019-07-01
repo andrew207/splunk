@@ -1,12 +1,6 @@
 # Grab base Phusion
-FROM phusion/baseimage:0.9.19
+FROM alpine:3.10.0
 MAINTAINER atunnecliffe <andrew@atunnecliffe.com>
-
-# Make Phusion work as nonroot for OpenShift compatibility
-RUN mkdir -p /tmp/
-COPY . /tmp
-RUN chmod +x /tmp/setup.sh
-RUN /tmp/setup.sh
 
 # Set environment variables
 ENV HOME /root
@@ -16,15 +10,8 @@ ENV LC_ALL C.UTF-8
 ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB.UTF-8
 
-# Run baseimage init
-CMD ["/sbin/my_init","--","setuser","app","bash"]
-CMD ["/sbin/my_init"]
-RUN find /etc/container_environment -type d -exec chmod 755 {} \;
-RUN find /etc/container_environment -type f -exec chmod 644 {} \;
-RUN chmod 644 /etc/container_environment.sh /etc/container_environment.json
-
 # ARGS
-ARG DOWNLOAD_URL=https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.3.0&product=splunk&filename=splunk-7.3.0-657388c7a488-linux-2.6-amd64.deb&wget=true
+ARG DOWNLOAD_URL=https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.3.0&product=splunk&filename=splunk-7.3.0-657388c7a488-Linux-x86_64.tgz&wget=true
 ARG SPLUNK_CLI_ARGS="--accept-license --no-prompt"
 ARG ADMIN_PASSWORD=changeme2019
 ARG IS_UNRAID=false
@@ -35,21 +22,33 @@ ENV SPLUNK_CLI_ARGS $SPLUNK_CLI_ARGS
 ENV ADMIN_PASSWORD $ADMIN_PASSWORD
 ENV IS_UNRAID $IS_UNRAID
 
-# Disable SSH
-RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
+# Install dependancies 
+# wget: for downloading Splunk and dependancies
+# tar: for installing Splunk 
+# alpine-sdk: provides linkers/builders required to run Splunk 
+# ca-certificates: required to securely download modified glibc
+# procps: required as Splunk uses ps with non-busybox arguments
+RUN apk add --no-cache --virtual wget tar alpine-sdk ca-certificates procps
 
-# Install wget
-RUN apt-get update -q
-RUN apt-get install -y wget
+# Install custom glibc builder compatible with Splunk
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
+RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk
+RUN apk add glibc-2.29-r0.apk
 
-# Set up autostarts
-RUN mkdir -p /etc/my_init.d
-COPY 50_gosplunk.init /etc/my_init.d/50_gosplunk.init
-RUN chmod +x /etc/my_init.d/50_gosplunk.init
+# Add splunk group and user 
+RUN addgroup -S splunk && adduser -S splunk -G splunk -g "Splunk User" -s /bin/bash -D splunk
 
-# Clean up APT
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Move startup script
+WORKDIR /opt/splunk
+COPY gosplunk.sh /opt/splunk/gosplunk.sh
+
+# Fix permissions
+RUN chown -R splunk:splunk /opt/
+
+USER splunk
 
 # Set up ports and volumes
+VOLUME ["/apps"]
 EXPOSE 8000 8089 9997
-VOLUME ["/opt/splunk/var", "/data", "/apps"]
+
+ENTRYPOINT [ "./gosplunk.sh" ]
