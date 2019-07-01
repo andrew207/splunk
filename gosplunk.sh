@@ -1,5 +1,13 @@
 #!/bin/sh
 
+# Enable arbitrary users 
+if ! whoami &> /dev/null; then
+  if [ -w /etc/passwd ]; then
+    echo "${USER_NAME:-default}:x:$(id -u):0:${USER_NAME:-default} user:${HOME}:/sbin/nologin" >> /etc/passwd
+  fi
+fi
+exec "$@"
+
 # If Splunk is not downloaded (or wants a different version), download/install it.
 # assumes string in the format "splunk-<version>-" exists in the URL
 FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'`
@@ -10,13 +18,6 @@ else
   wget -q -O /tmp/$FILE.tar.gz $DOWNLOAD_URL
   tar xzf /tmp/$FILE.tar.gz -C /opt
   PATH=$PATH:~/opt/splunk/bin
-fi
-
-# Unraid fix permissions
-if [ "x$IS_UNRAID" = "x" ] ; then 
-  echo "not unRAID, no usermod needed."
-else 
-  usermod -u 99 nobody && usermod -g 100 nobody && usermod -d /home nobody && chown -R nobody:users /home 
 fi
 
 # Fix "unusable filesystem" when Splunkd tries to create files

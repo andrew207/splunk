@@ -14,13 +14,11 @@ ENV LANGUAGE en_GB.UTF-8
 ARG DOWNLOAD_URL=https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.3.0&product=splunk&filename=splunk-7.3.0-657388c7a488-Linux-x86_64.tgz&wget=true
 ARG SPLUNK_CLI_ARGS="--accept-license --no-prompt"
 ARG ADMIN_PASSWORD=changeme2019
-ARG IS_UNRAID=false
 
 # ENVS based on ARGS (so you can configure either at build time or runtime)
 ENV DOWNLOAD_URL $DOWNLOAD_URL
 ENV SPLUNK_CLI_ARGS $SPLUNK_CLI_ARGS
 ENV ADMIN_PASSWORD $ADMIN_PASSWORD
-ENV IS_UNRAID $IS_UNRAID
 
 # Install dependancies 
 # wget: for downloading Splunk and dependancies
@@ -35,18 +33,19 @@ RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/s
 RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk
 RUN apk add glibc-2.29-r0.apk
 
-# Add splunk group and user 
-RUN addgroup -S splunk && adduser -S splunk -G splunk -g "Splunk User" -s /bin/bash -D splunk
-
 # Move startup script
 WORKDIR /opt/splunk
 COPY gosplunk.sh /opt/splunk/gosplunk.sh
-
-# Fix permissions
-RUN chown -R splunk:splunk /opt/
 RUN chmod +x /opt/splunk/gosplunk.sh
 
-USER splunk
+### Setup user for build execution and application runtime
+ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=${SPLUNK_HOME}
+RUN chgrp -R 0 ${SPLUNK_HOME} && \
+chmod -R g=u ${SPLUNK_HOME} /etc/passwd
+
+### Containers should NOT run as root as a good practice
+USER 10001
+WORKDIR ${SPLUNK_HOME}
 
 # Set up ports and volumes
 VOLUME ["/apps"]
