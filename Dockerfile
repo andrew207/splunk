@@ -44,6 +44,7 @@ COPY gosplunk.sh /opt/splunk/gosplunk.sh
 
 # Fix permissions
 RUN chown -R splunk:splunk /opt/
+RUN chmod +x /opt/splunk/gosplunk.sh
 
 USER splunk
 
