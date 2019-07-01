@@ -31,5 +31,6 @@ printf '[user_info]\nUSERNAME = admin\nPASSWORD = %s' "$ADMIN_PASSWORD" > $SPLUN
 # Run Splunk
 /opt/splunk/bin/splunk start $SPLUNK_CLI_ARGS
 
-# Follow instructions from Phusion and return 0
-exit 0
+# Keep dummy process running because Splunk can and will restart based on 
+# user actions and we don't want the container to die. 
+tail -f /dev/null
