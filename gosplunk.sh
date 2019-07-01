@@ -1,14 +1,15 @@
-#!/bin/bash
+#!/bin/sh
 
 # If Splunk is not downloaded (or wants a different version), download/install it.
 # assumes string in the format "splunk-<version>-" exists in the URL
 FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'`
-if test -f "$FILE.deb"; then
-  echo "$FILE.deb exists, no need to download again."
+if test -f "$FILE.tar.gz"; then
+  echo "$FILE.tar.gz exists, no need to download again."
 else
-  echo "$FILE.deb does not exist, downloading and installing/upgrading."
-  wget -q -O $FILE.deb $DOWNLOAD_URL
-  dpkg -i $FILE.deb
+  echo "$FILE.tar.gz does not exist, downloading and installing/upgrading."
+  wget -q -O /tmp/$FILE.tar.gz $DOWNLOAD_URL
+  tar xzf /tmp/$FILE.tar.gz -C /opt
+  PATH=$PATH:~/opt/splunk/bin
 fi
 
 # Unraid fix permissions
