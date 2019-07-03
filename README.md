@@ -1,11 +1,13 @@
 # Splunk 
 This is a Dockerfile for Splunk - https://www.splunk.com
 
+It is based on Alpine Linux and supports OpenShift. 
+
 It is designed to deploy Splunk and auto-install any custom apps you want through a volume. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089. 
 
 If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.3.0 with the user admin:changeme2019. 
 
-First start will take a while because Splunk will need to be downloaded (300MB or so). Check 50_gosplunk.init if you want to see how it starts up.
+First start will take a while because Splunk will need to be downloaded (300MB or so). Check gosplunk.shNo worries, if you check out my dockerhub page I've actually got an Alpine Linux based image working if you prefer to run Splunk as non-root if you want to see how it starts up.
 
 Compatible with Splunk 7.1.0 and newer. 
 
