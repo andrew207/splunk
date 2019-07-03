@@ -35,21 +35,23 @@ RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/s
     rm -f glicx-2.29-r0.apk
 
 # Move startup script
-WORKDIR /opt/splunk
+WORKDIR ${SPLUNK_HOME}
 COPY gosplunk.sh /opt/splunk/gosplunk.sh
 RUN chmod +x /opt/splunk/gosplunk.sh
 
-# Setup user for build execution and application runtime
+# Add Splunk to env
 ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=${SPLUNK_HOME}
-RUN chgrp -R 0 ${SPLUNK_HOME} && \
-    chmod -R g+r ${SPLUNK_HOME}
 
-# Containers should NOT run as root as a good practice
-USER 10001
-WORKDIR ${SPLUNK_HOME}
+# Splunk expects users to have an entry in /etc/passwd, OpenShift doesn't generate this so we will create one. 
+# See additional code in entrypoint script for writing the file.
+RUN chgrp -R 0 ${SPLUNK_HOME} && \
+    chmod -R g=u ${SPLUNK_HOME} && \
+    chmod -R g=u /etc/passwd
 
 # Set up ports and volumes
 VOLUME ["/apps"]
 EXPOSE 8000 8089 9997
 
+# Startup and change our user
 ENTRYPOINT [ "./gosplunk.sh" ]
+USER 10001
