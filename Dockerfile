@@ -29,21 +29,22 @@ ENV ADMIN_PASSWORD $ADMIN_PASSWORD
 RUN apk add --no-cache --virtual wget tar alpine-sdk ca-certificates procps
 
 # Install custom glibc builder compatible with Splunk
-RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
-RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk
-RUN apk add glibc-2.29-r0.apk
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk && \
+    apk add glibc-2.29-r0.apk && \
+    rm -f glicx-2.29-r0.apk
 
 # Move startup script
 WORKDIR /opt/splunk
-COPY gosplunk.sh /opt/splunk/gosplunk.sh
-RUN chmod +x /opt/splunk/gosplunk.sh
+COPY gosplunk.sh /opt/splunk/gosplunk.sh && \
+     chmod +x /opt/splunk/gosplunk.sh
 
-### Setup user for build execution and application runtime
+# Setup user for build execution and application runtime
 ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=${SPLUNK_HOME}
 RUN chgrp -R 0 ${SPLUNK_HOME} && \
-chmod -R g=u ${SPLUNK_HOME} /etc/passwd
+    chmod -R g=u ${SPLUNK_HOME} /etc/passwd
 
-### Containers should NOT run as root as a good practice
+# Containers should NOT run as root as a good practice
 USER 10001
 WORKDIR ${SPLUNK_HOME}
 
