@@ -42,7 +42,7 @@ RUN chmod +x /opt/splunk/gosplunk.sh
 # Setup user for build execution and application runtime
 ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=${SPLUNK_HOME}
 RUN chgrp -R 0 ${SPLUNK_HOME} && \
-    chmod -R g=u ${SPLUNK_HOME} /etc/passwd
+    chmod -R g+r ${SPLUNK_HOME}
 
 # Containers should NOT run as root as a good practice
 USER 10001
