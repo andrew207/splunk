@@ -36,8 +36,8 @@ RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/s
 
 # Move startup script
 WORKDIR /opt/splunk
-COPY gosplunk.sh /opt/splunk/gosplunk.sh && \
-     chmod +x /opt/splunk/gosplunk.sh
+COPY gosplunk.sh /opt/splunk/gosplunk.sh
+RUN chmod +x /opt/splunk/gosplunk.sh
 
 # Setup user for build execution and application runtime
 ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=${SPLUNK_HOME}
