@@ -42,4 +42,4 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Set up ports and volumes
 EXPOSE 8000 8089 9997
-VOLUME ["/opt/splunk/var", "/data", "/apps"]
+VOLUME ["/opt/splunk/var", "/opt/splunk/etc", "/data", "/apps"]
