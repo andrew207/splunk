@@ -12,7 +12,7 @@ exec "$@"
 FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'`
 if test -f "$FILE.tar.gz"; then
   echo "$FILE.tar.gz exists, no need to download again."
-  if test -f "$SPLUNK_HOME/bin/splunk" then
+  if test -f "$SPLUNK_HOME/bin/splunk"; then
     echo "Splunk appears installed, no need to reinstall."
   else
     # Install Splunk and set PATH
