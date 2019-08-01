@@ -33,11 +33,24 @@ RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/s
     wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk && \
     apk add glibc-2.29-r0.apk && \
     rm -f glicx-2.29-r0.apk
-
+    
 # Move startup script
+RUN mkdir -p $SPLUNK_HOME
+WORKDIR $SPLUNK_HOME
+COPY gosplunk.sh $SPLUNK_HOME/gosplunk.sh
+RUN chmod +x $SPLUNK_HOME/gosplunk.sh
+
+# Add Splunk to env
+ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=$SPLUNK_HOME
+
+# Download Splunk
+RUN FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
+    wget -q -O $SPLUNK_HOME/$FILE.tar.gz $DOWNLOAD_URL
+
+# Prepare startup script
 WORKDIR ${SPLUNK_HOME}
-COPY gosplunk.sh /opt/splunk/gosplunk.sh
-RUN chmod +x /opt/splunk/gosplunk.sh
+COPY gosplunk.sh ./gosplunk.sh
+RUN chmod +x ./gosplunk.sh
 
 # Add Splunk to env
 ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=${SPLUNK_HOME}
