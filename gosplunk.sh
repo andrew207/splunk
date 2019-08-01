@@ -8,30 +8,35 @@ if ! whoami &> /dev/null; then
 fi
 exec "$@"
 
-# If Splunk is not downloaded (or wants a different version), download/install it.
-# assumes string in the format "splunk-<version>-" exists in the URL
+# If Splunk is not installed, install it
 FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'`
 if test -f "$FILE.tar.gz"; then
   echo "$FILE.tar.gz exists, no need to download again."
+  if test -f "$SPLUNK_HOME/bin/splunk" then
+    echo "Splunk appears installed, no need to reinstall."
+  else
+    # Install Splunk and set PATH
+    tar xzf $SPLUNK_HOME/$FILE.tar.gz -C /opt
+    PATH=$PATH:~$SPLUNK_HOME/bin
+    
+    # Fix "unusable filesystem" when Splunkd tries to create files
+    printf "\nOPTIMISTIC_ABOUT_FILE_LOCKING = 1\n" >> $SPLUNK_HOME/etc/splunk-launch.conf
+
+    # Set admin password
+    printf '[user_info]\nUSERNAME = admin\nPASSWORD = %s' "$ADMIN_PASSWORD" > $SPLUNK_HOME/etc/system/local/user-seed.conf
+
+    # Reduce log noise
+    printf '[splunkd]\ncategory.HttpPubSubConnection=WARN\ncategory.UiHttpListener=ERROR' > $SPLUNK_HOME/etc/log-local.cfg
+    
+    # Install apps from volume
+    yes | cp -rf /apps/* /opt/splunk/etc/apps
+  fi
 else
-  echo "$FILE.tar.gz does not exist, downloading and installing/upgrading."
-  wget -q -O /tmp/$FILE.tar.gz $DOWNLOAD_URL
-  tar xzf /tmp/$FILE.tar.gz -C /opt
-  PATH=$PATH:~/opt/splunk/bin
+  echo "$FILE.tar.gz does not exist, was is correctly downloaded in the base image?"
 fi
-
-# Fix "unusable filesystem" when Splunkd tries to create files
-printf "\nOPTIMISTIC_ABOUT_FILE_LOCKING = 1\n" >> $SPLUNK_HOME/etc/splunk-launch.conf
-
-# Install apps from volume
-yes | cp -rf /apps/* /opt/splunk/etc/apps
-
-# Set admin password
-printf '[user_info]\nUSERNAME = admin\nPASSWORD = %s' "$ADMIN_PASSWORD" > $SPLUNK_HOME/etc/system/local/user-seed.conf
 
 # Run Splunk
 /opt/splunk/bin/splunk start $SPLUNK_CLI_ARGS
 
-# Keep dummy process running because Splunk can and will restart based on 
-# user actions and we don't want the container to die. 
-tail -f /dev/null
+# Keep container running 
+tail -f $SPLUNK_HOME/var/log/splunk/splunkd.log
