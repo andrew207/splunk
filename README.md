@@ -3,7 +3,7 @@ This is a Dockerfile for Splunk - https://www.splunk.com
 
 It is designed to deploy Splunk and auto-install any custom apps you want through a volume. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089. 
 
-If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.3.0 with the user admin:changeme2019. 
+If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.3.1 with the user admin:changeme2019. 
 
 First start will take a while because Splunk will need to be downloaded (300MB or so). Check 50_gosplunk.init if you want to see how it starts up.
 
@@ -29,7 +29,7 @@ Install an older version (7.2.6) and change admin password
 # Arguments
 `DOWNLOAD_URL` 
 
-is a direct link to download the .DEB file of your desired release obtained from the "download via WGET" button on the website. This Dockerfile is compatible with versions newer than 7.1.1. Currently defaults to version 7.2.6. 
+is a direct link to download the .DEB file of your desired release obtained from the "download via WGET" button on the website. This Dockerfile is compatible with versions newer than 7.1.1. Currently defaults to version 7.3.1. 
 
 `SPLUNK_CLI_ARGS` 
 
