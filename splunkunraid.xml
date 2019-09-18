@@ -11,7 +11,7 @@
   <Project>https://www.splunk.com/</Project>
   <Overview>This is a Dockerfile for Splunk - https://www.splunk.com&#xD;
 &#xD;
-If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.3.0 with the user admin:changeme2019.&#xD;
+If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.3.1 with the user admin:changeme2019.&#xD;
 &#xD;
 It is designed to deploy Splunk and auto-install any custom apps you want through a volume. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089.&#xD;
 &#xD;
@@ -30,7 +30,7 @@ Compatible with Splunk 7.1.0 and newer.</Overview>
   <DonateLink>https://paypal.me/atunnecliffe</DonateLink>
   <Description>This is a Dockerfile for Splunk - https://www.splunk.com&#xD;
 &#xD;
-If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.3.0 with the user admin:changeme2019.&#xD;
+If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.3.1 with the user admin:changeme2019.&#xD;
 &#xD;
 It is designed to deploy Splunk and auto-install any custom apps you want through a volume. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089.&#xD;
 &#xD;
@@ -76,7 +76,7 @@ Compatible with Splunk 7.1.0 and newer.</Description>
   </Data>
   <Environment>
     <Variable>
-      <Value>https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&amp;platform=linux&amp;version=7.3.0&amp;product=splunk&amp;filename=splunk-7.3.0-657388c7a488-linux-2.6-amd64.deb&amp;wget=true</Value>
+      <Value></Value>
       <Name>DOWNLOAD_URL</Name>
       <Mode/>
     </Variable>
@@ -99,7 +99,7 @@ Compatible with Splunk 7.1.0 and newer.</Description>
   <Labels/>
   <Config Name="Web" Target="8000" Default="8000" Mode="tcp" Description="HTTP Web UI" Type="Port" Display="always" Required="true" Mask="false">8000</Config>
   <Config Name="Indexed Data" Target="/opt/splunk/var" Default="/mnt/user/appdata/splunk/var" Mode="rw" Description="Set this if you want indexed data persistence" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/splunk/var</Config>
-  <Config Name="Download URL" Target="DOWNLOAD_URL" Default="https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&amp;amp;platform=linux&amp;amp;version=7.3.0&amp;amp;product=splunk&amp;amp;filename=splunk-7.3.0-657388c7a488-linux-2.6-amd64.deb&amp;amp;wget=true" Mode="" Description="Direct WGET link to your desired version" Type="Variable" Display="advanced" Required="true" Mask="false">https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&amp;platform=linux&amp;version=7.3.0&amp;product=splunk&amp;filename=splunk-7.3.0-657388c7a488-linux-2.6-amd64.deb&amp;wget=true</Config>
+  <Config Name="Download URL" Target="DOWNLOAD_URL" Default="" Mode="" Description="Direct WGET link to your desired version" Type="Variable" Display="advanced" Required="false" Mask="false"></Config>
   <Config Name="Splunk start args" Target="SPLUNK_CLI_ARGS" Default="--accept-license --no-prompt" Mode="" Description="Arguments to start Splunk with. " Type="Variable" Display="advanced" Required="true" Mask="false">--accept-license --no-prompt</Config>
   <Config Name="Admin Password" Target="ADMIN_PASSWORD" Default="changeme2019" Mode="" Description="Splunk Web UI admin password." Type="Variable" Display="advanced" Required="true" Mask="true">changeme2019</Config>
   <Config Name="Is unRAID" Target="IS_UNRAID" Default="true" Mode="" Description="Leave this true to fix up 'nobody' user to match unRAID. " Type="Variable" Display="advanced-hide" Required="true" Mask="false">true</Config>
