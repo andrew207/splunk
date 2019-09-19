@@ -1,13 +1,11 @@
 # Splunk 
-This is a Dockerfile for Splunk - https://www.splunk.com
+This is a Dockerfile for Splunk, currently running version 7.3.1.1 - https://www.splunk.com
 
-It is based on Alpine Linux and supports OpenShift. 
+It is based on Alpine Linux and supports OpenShift and unRAID.
 
-It is designed to deploy Splunk and auto-install any custom apps you want through a volume. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089. 
+It is designed to deploy Splunk 7.3.1.1 quickly and easily. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089. 
 
-If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.3.0 with the user admin:changeme2019. 
-
-First start will take a while because Splunk will need to be downloaded (300MB or so). Check gosplunk.shNo worries, if you check out my dockerhub page I've actually got an Alpine Linux based image working if you prefer to run Splunk as non-root if you want to see how it starts up.
+If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.3.1.1 with the user admin:changeme2019. 
 
 Compatible with Splunk 7.1.0 and newer. 
 
@@ -16,13 +14,10 @@ Single instance with no persistence
 
 `docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 --name splunk atunnecliffe/splunk`
 
-Splunk that auto-installs all apps from volume. 
-
-`docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -v /splunkconfig/heavyforwarder:/apps --name splunk atunnecliffe/splunk`
 
 Install an older version (7.2.6) and change admin password
 
-`docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -e ADMIN_PASSWORD="mynewpassword" -e DOWNLOAD_URL="https://www.splunk.com/page/download_track?file=7.2.6/linux/splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb&ac=&wget=true&name=wget&platform=Linux&architecture=x86_64&version=7.2.6&product=splunk&typed=release" -p 8000:8000 --name splunk atunnecliffe/splunk`
+`docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -e ADMIN_PASSWORD="mynewpassword" -e DOWNLOAD_URL="https://www.splunk.com/page/download_track?file=7.2.6/linux/splunk-7.2.6-c0bf0f679ce9-Linux-x86_64.tgz&ac=&wget=true&name=wget&platform=Linux&architecture=x86_64&version=7.2.6&product=splunk&typed=release" -p 8000:8000 --name splunk atunnecliffe/splunk`
 
 # Arguments
 `DOWNLOAD_URL` 
@@ -36,10 +31,6 @@ What args do you want Splunk to start with every time it opens? Defaults to `--a
 `ADMIN_PASSWORD` 
 
 Sets the default "admin" user account password. Defaults to `changeme2019`. You can change this through the web interface once the container is running. 
-
-`IS_UNRAID` 
-
-Defaults to `false`, set to `true` if you're running on unRAID. This just fixes up permissions of the 'nobody' user to match unRAID so you don't run in to permissions issues when editing data in volumes. 
 
 # Volumes
 

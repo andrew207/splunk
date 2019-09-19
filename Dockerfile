@@ -1,5 +1,5 @@
 # Grab base Alpine
-FROM alpine:3.10.0
+FROM alpine:3.10.2
 MAINTAINER atunnecliffe <andrew@atunnecliffe.com>
 
 # Set environment variables
@@ -11,7 +11,7 @@ ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB.UTF-8
 
 # ARGS
-ARG DOWNLOAD_URL=https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.3.0&product=splunk&filename=splunk-7.3.0-657388c7a488-Linux-x86_64.tgz&wget=true
+ARG DOWNLOAD_URL=https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.3.1.1&product=splunk&filename=splunk-7.3.1.1-7651b7244cf2-Linux-x86_64.tgz&wget=true
 ARG SPLUNK_CLI_ARGS="--accept-license --no-prompt"
 ARG ADMIN_PASSWORD=changeme2019
 
@@ -43,10 +43,6 @@ RUN chmod +x $SPLUNK_HOME/gosplunk.sh
 # Add Splunk to env
 ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=$SPLUNK_HOME
 
-# Download Splunk
-RUN FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
-    wget -q -O $SPLUNK_HOME/$FILE.tar.gz $DOWNLOAD_URL
-
 # Prepare startup script
 WORKDIR ${SPLUNK_HOME}
 COPY gosplunk.sh ./gosplunk.sh
@@ -54,6 +50,10 @@ RUN chmod +x ./gosplunk.sh
 
 # Add Splunk to env
 ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=${SPLUNK_HOME}
+
+# Download Splunk
+RUN FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
+    wget -q -O $SPLUNK_HOME/$FILE.tar.gz $DOWNLOAD_URL
 
 # Splunk expects users to have an entry in /etc/passwd, OpenShift doesn't generate this so we will create one. 
 # See additional code in entrypoint script for writing the file.

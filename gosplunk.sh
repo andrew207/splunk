@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Enable arbitrary users 
+# Enable arbitrary users in OpenShift
 if ! whoami &> /dev/null; then
   if [ -w /etc/passwd ]; then
     echo "${USER_NAME:-default}:x:$(id -u):0:${USER_NAME:-default} user:${HOME}:/sbin/nologin" >> /etc/passwd
@@ -32,7 +32,7 @@ if test -f "$FILE.tar.gz"; then
     yes | cp -rf /apps/* /opt/splunk/etc/apps
   fi
 else
-  echo "$FILE.tar.gz does not exist, was is correctly downloaded in the base image?"
+  echo "$FILE.tar.gz does not exist, was it correctly downloaded in the base image?"
 fi
 
 # Run Splunk
