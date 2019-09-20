@@ -63,12 +63,7 @@ RUN FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
     wget -q -O $SPLUNK_HOME/$FILE.tar.gz $DOWNLOAD_URL && \ 
 	chgrp -R 0 ${SPLUNK_HOME} && \
     chmod -R g=u ${SPLUNK_HOME} && \
-    chmod -R g=u /etc/passwd && \
-	usermod -u 99 nobody && \
-    usermod -g 100 nobody && \
-    usermod -d ${SPLUNK_HOME} nobody && \
-    chown -R nobody:users ${SPLUNK_HOME}
-
+    chmod -R g=u /etc/passwd 
  
 # Startup and change our user
 ENTRYPOINT [ "./gosplunk.sh" ]
