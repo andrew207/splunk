@@ -57,5 +57,6 @@ RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/s
 VOLUME ["/apps", "${SPLUNK_HOME}"]
 EXPOSE 8000 8089 9997
  
-# Startup and change our user
+# Startup
+WORKDIR ${SPLUNK_HOME}
 ENTRYPOINT [ "./gosplunk.sh" ]
