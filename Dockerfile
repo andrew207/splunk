@@ -59,4 +59,3 @@ EXPOSE 8000 8089 9997
  
 # Startup and change our user
 ENTRYPOINT [ "./gosplunk.sh" ]
-USER 10001
