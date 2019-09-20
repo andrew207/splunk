@@ -14,6 +14,9 @@ Single instance with no persistence
 
 `docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 --name splunk atunnecliffe/splunk`
 
+Single instance with indexed data and config/app persistence in unRAID
+
+`docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -v '/mnt/user/appdata/splunk/var/lib/splunk':'/opt/splunk/lib/splunk':'rw' -v '/mnt/user/appdata/splunk/etc':'/opt/splunk/etc':'rw' --name splunk atunnecliffe/splunk`
 
 Install an older version (7.2.6) and change admin password
 
