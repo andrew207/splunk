@@ -22,7 +22,7 @@ if test -f "$FILE.tar.gz"; then
     # Fix "unusable filesystem" when Splunkd tries to create files
     printf "\nOPTIMISTIC_ABOUT_FILE_LOCKING = 1\n" >> $SPLUNK_HOME/etc/splunk-launch.conf
 
-    # Set admin password
+    # Set admin password 
     printf '[user_info]\nUSERNAME = admin\nPASSWORD = %s' "$ADMIN_PASSWORD" > $SPLUNK_HOME/etc/system/local/user-seed.conf
 
     # Reduce log noise

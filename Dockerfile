@@ -60,7 +60,7 @@ RUN FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
 RUN chgrp -R 0 ${SPLUNK_HOME} && \
     chmod -R g=u ${SPLUNK_HOME} && \
     chmod -R g=u /etc/passwd
-
+ 
 # Set up ports and volumes
 VOLUME ["/apps"]
 EXPOSE 8000 8089 9997
