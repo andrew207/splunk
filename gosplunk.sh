@@ -15,9 +15,12 @@ if test -f "$FILE.tar.gz"; then
   if test -f "$SPLUNK_HOME/bin/splunk"; then
     echo "Splunk appears installed, no need to reinstall."
   else
+    echo "Installing Splunk..."
     # Install Splunk and set PATH
     tar xzf $SPLUNK_HOME/$FILE.tar.gz -C /opt
     PATH=$PATH:~$SPLUNK_HOME/bin
+	
+	echo "Applying Docker optimisations..."
     
     # Fix "unusable filesystem" when Splunkd tries to create files
     printf "\nOPTIMISTIC_ABOUT_FILE_LOCKING = 1\n" >> $SPLUNK_HOME/etc/splunk-launch.conf
@@ -27,13 +30,12 @@ if test -f "$FILE.tar.gz"; then
 
     # Reduce log noise
     printf '[splunkd]\ncategory.HttpPubSubConnection=WARN\ncategory.UiHttpListener=ERROR' > $SPLUNK_HOME/etc/log-local.cfg
-    
-    # Install apps from volume
-    yes | cp -rf /apps/* /opt/splunk/etc/apps
   fi
 else
   echo "$FILE.tar.gz does not exist, was it correctly downloaded in the base image?"
 fi
+
+echo "Starting Splunkd..."
 
 # Run Splunk
 /opt/splunk/bin/splunk start $SPLUNK_CLI_ARGS
