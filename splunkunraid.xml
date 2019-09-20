@@ -15,17 +15,15 @@ If you run the Dockerfile with no arguments you will get a single instance of Sp
 &#xD;
 It is designed to deploy Splunk and auto-install any custom apps you want through a volume. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089.&#xD;
 &#xD;
-First start will take a while because Splunk will need to be downloaded (300MB or so).&#xD;
-&#xD;
 Compatible with Splunk 7.1.0 and newer.</Overview>
-  <Category>Tools: Network:Management Status:Stable</Category>
+  <Category>Tools:Utilities Network:Management Status:Stable</Category>
   <WebUI>http://[IP]:8000</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/andrew207/splunk/master/splunkunraid.xml</TemplateURL>
   <Icon>https://secure.gravatar.com/avatar/c4cadc82a16e67018f57f1fc2547caa4.jpg</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
-  <DateInstalled>1568936410</DateInstalled>
+  <DateInstalled>1568943898</DateInstalled>
   <DonateText>Donate to Dockerfile author via PayPal</DonateText>
   <DonateLink>https://paypal.me/atunnecliffe</DonateLink>
   <Description>This is a Dockerfile for Splunk - https://www.splunk.com&#xD;
@@ -33,8 +31,6 @@ Compatible with Splunk 7.1.0 and newer.</Overview>
 If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.3.1.1 with the user admin:changeme2019.&#xD;
 &#xD;
 It is designed to deploy Splunk and auto-install any custom apps you want through a volume. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089.&#xD;
-&#xD;
-First start will take a while because Splunk will need to be downloaded (300MB or so).&#xD;
 &#xD;
 Compatible with Splunk 7.1.0 and newer.</Description>
   <Networking>
@@ -59,8 +55,8 @@ Compatible with Splunk 7.1.0 and newer.</Description>
   </Networking>
   <Data>
     <Volume>
-      <HostDir>/mnt/user/appdata/splunk/var</HostDir>
-      <ContainerDir>/opt/splunk/var</ContainerDir>
+      <HostDir>/mnt/user/appdata/splunk/var/lib/splunk</HostDir>
+      <ContainerDir>/opt/splunk/var/lib/splunk</ContainerDir>
       <Mode>rw</Mode>
     </Volume>
     <Volume>
@@ -83,8 +79,8 @@ Compatible with Splunk 7.1.0 and newer.</Description>
   </Environment>
   <Labels/>
   <Config Name="Web" Target="8000" Default="8000" Mode="tcp" Description="HTTP Web UI" Type="Port" Display="always" Required="true" Mask="false">8000</Config>
-  <Config Name="Indexed Data" Target="/opt/splunk/var" Default="/mnt/user/appdata/splunk/var" Mode="rw" Description="Set this if you want indexed data persistence" Type="Path" Display="always" Required="false" Mask="false"/>
-  <Config Name="App Data" Target="/opt/splunk/etc/apps" Default="/mnt/user/appdata/splunk/etc/apps" Mode="rw" Description="Set this if you want config and installed app persistence" Type="Path" Display="always" Required="false" Mask="false"/>
+  <Config Name="Indexed Data" Target="/opt/splunk/var/lib/splunk" Default="/mnt/user/appdata/splunk/var" Mode="rw" Description="For indexed data persistence" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/splunk/var/lib/splunk</Config>
+  <Config Name="Apps to Install" Target="/opt/splunk/etc/apps" Default="" Mode="rw" Description="For config and app persistence" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/splunk/etc/apps</Config>
   <Config Name="Splunk start args" Target="SPLUNK_CLI_ARGS" Default="--accept-license --no-prompt" Mode="" Description="Arguments to start Splunk with. " Type="Variable" Display="advanced" Required="true" Mask="false">--accept-license --no-prompt</Config>
   <Config Name="Admin Password" Target="ADMIN_PASSWORD" Default="changeme2019" Mode="" Description="Splunk Web UI admin password." Type="Variable" Display="advanced" Required="true" Mask="true">changeme2019</Config>
   <Config Name="Management" Target="8089" Default="8089" Mode="tcp" Description="HTTPS API" Type="Port" Display="advanced" Required="false" Mask="false">8089</Config>
