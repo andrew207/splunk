@@ -43,16 +43,8 @@ RUN chmod +x $SPLUNK_HOME/gosplunk.sh
 # Add Splunk to env
 ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=$SPLUNK_HOME
 
-# Prepare startup script
-WORKDIR ${SPLUNK_HOME}
-COPY gosplunk.sh ./gosplunk.sh
-RUN chmod +x ./gosplunk.sh
-
-# Add Splunk to env
-ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=${SPLUNK_HOME}
-
 # Set up ports and volumes
-VOLUME ["/apps", "${SPLUNK_HOME}/var/lib/splunk", "${SPLUNK_HOME}/etc/apps"]
+VOLUME ["/apps", "${SPLUNK_HOME}"]
 EXPOSE 8000 8089 9997
 
 # Download Splunk and fix permissions
