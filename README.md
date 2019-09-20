@@ -3,7 +3,7 @@ This is a Dockerfile for Splunk, currently running version 7.3.1.1 - https://www
 
 It is based on Alpine Linux and supports OpenShift and unRAID.
 
-It is designed to deploy Splunk 7.3.1.1 quickly and easily. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089. 
+It is designed to deploy Splunk Enterprise quickly and easily. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089. 
 
 If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.3.1.1 with the user admin:changeme2019. 
 
