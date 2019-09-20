@@ -51,20 +51,25 @@ RUN chmod +x ./gosplunk.sh
 # Add Splunk to env
 ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=${SPLUNK_HOME}
 
-# Download Splunk
-RUN FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
-    wget -q -O $SPLUNK_HOME/$FILE.tar.gz $DOWNLOAD_URL
-
-# Splunk expects users to have an entry in /etc/passwd, OpenShift doesn't generate this so we will create one. 
-# See additional code in entrypoint script for writing the file.
-RUN chgrp -R 0 ${SPLUNK_HOME} && \
-    chmod -R g=u ${SPLUNK_HOME} && \
-    chmod -R g=u /etc/passwd
- 
 # Set up ports and volumes
-VOLUME ["/apps"]
+VOLUME ["/apps", "${SPLUNK_HOME}/var", "${SPLUNK_HOME}/etc/apps"]
 EXPOSE 8000 8089 9997
 
+# Download Splunk and fix permissions
+# Configure user nobody to match unRAID's settings
+# Splunk expects users to have an entry in /etc/passwd, OpenShift doesn't generate this so we will create one. 
+# See additional code in entrypoint script for writing the file.	
+RUN FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
+    wget -q -O $SPLUNK_HOME/$FILE.tar.gz $DOWNLOAD_URL && \ 
+	chgrp -R 0 ${SPLUNK_HOME} && \
+    chmod -R g=u ${SPLUNK_HOME} && \
+    chmod -R g=u /etc/passwd && \
+	usermod -u 99 nobody && \
+    usermod -g 100 nobody && \
+    usermod -d ${SPLUNK_HOME} nobody && \
+    chown -R nobody:users ${SPLUNK_HOME}
+
+ 
 # Startup and change our user
 ENTRYPOINT [ "./gosplunk.sh" ]
 USER 10001
