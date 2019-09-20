@@ -52,7 +52,7 @@ RUN chmod +x ./gosplunk.sh
 ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=${SPLUNK_HOME}
 
 # Set up ports and volumes
-VOLUME ["/apps", "${SPLUNK_HOME}/var", "${SPLUNK_HOME}/etc/apps"]
+VOLUME ["/apps", "${SPLUNK_HOME}/var/lib/splunk", "${SPLUNK_HOME}/etc/apps"]
 EXPOSE 8000 8089 9997
 
 # Download Splunk and fix permissions
@@ -63,6 +63,7 @@ RUN FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
     wget -q -O $SPLUNK_HOME/$FILE.tar.gz $DOWNLOAD_URL && \ 
 	chgrp -R 0 ${SPLUNK_HOME} && \
     chmod -R g=u ${SPLUNK_HOME} && \
+	chmod -R 755 ${SPLUNK_HOME} && \
     chmod -R g=u /etc/passwd 
  
 # Startup and change our user
