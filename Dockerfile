@@ -20,6 +20,25 @@ ENV DOWNLOAD_URL $DOWNLOAD_URL
 ENV SPLUNK_CLI_ARGS $SPLUNK_CLI_ARGS
 ENV ADMIN_PASSWORD $ADMIN_PASSWORD
 
+# Add Splunk to env
+ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=$SPLUNK_HOME
+
+# Prepare startup script
+WORKDIR ${SPLUNK_HOME}
+COPY gosplunk.sh ./gosplunk.sh
+RUN chmod +x ./gosplunk.sh
+
+# Download Splunk and fix permissions
+# Configure user nobody to match unRAID's settings
+# Splunk expects users to have an entry in /etc/passwd, OpenShift doesn't generate this so we will create one. 
+# See additional code in entrypoint script for writing the file.	
+RUN FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
+    wget -q -O $SPLUNK_HOME/$FILE.tar.gz $DOWNLOAD_URL && \ 
+	chgrp -R 0 ${SPLUNK_HOME} && \
+    chmod -R g=u ${SPLUNK_HOME} && \
+	chmod -R 755 ${SPLUNK_HOME} && \
+    chmod -R g=u /etc/passwd 
+
 # Install dependancies 
 # wget: for downloading Splunk and dependancies
 # tar: for installing Splunk 
@@ -33,30 +52,10 @@ RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/s
     wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk && \
     apk add glibc-2.29-r0.apk && \
     rm -f glicx-2.29-r0.apk
-    
-# Move startup script
-RUN mkdir -p $SPLUNK_HOME
-WORKDIR $SPLUNK_HOME
-COPY gosplunk.sh $SPLUNK_HOME/gosplunk.sh
-RUN chmod +x $SPLUNK_HOME/gosplunk.sh
-
-# Add Splunk to env
-ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=$SPLUNK_HOME
 
 # Set up ports and volumes
 VOLUME ["/apps", "${SPLUNK_HOME}"]
 EXPOSE 8000 8089 9997
-
-# Download Splunk and fix permissions
-# Configure user nobody to match unRAID's settings
-# Splunk expects users to have an entry in /etc/passwd, OpenShift doesn't generate this so we will create one. 
-# See additional code in entrypoint script for writing the file.	
-RUN FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
-    wget -q -O $SPLUNK_HOME/$FILE.tar.gz $DOWNLOAD_URL && \ 
-	chgrp -R 0 ${SPLUNK_HOME} && \
-    chmod -R g=u ${SPLUNK_HOME} && \
-	chmod -R 755 ${SPLUNK_HOME} && \
-    chmod -R g=u /etc/passwd 
  
 # Startup and change our user
 ENTRYPOINT [ "./gosplunk.sh" ]
