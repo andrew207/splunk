@@ -28,8 +28,21 @@ if test -f "$FILE.tar.gz"; then
     # Set admin password 
     printf '[user_info]\nUSERNAME = admin\nPASSWORD = %s' "$ADMIN_PASSWORD" > $SPLUNK_HOME/etc/system/local/user-seed.conf
 
-    # Reduce log noise
-    printf '[splunkd]\ncategory.HttpPubSubConnection=WARN\ncategory.UiHttpListener=ERROR' > $SPLUNK_HOME/etc/log-local.cfg
+    # Reduce/remove log noise:
+    # splunkd hitting its own web interface
+    # Splunk changing target indexer successfully 
+    # deploymentserver phonehome successfully
+    # Reduce historical log files from 5 to 1
+    # TODO: remove UI access logs as kube-probe health checks hit them constantly and it's useless noise
+    printf '[splunkd]\ncategory.HttpPubSubConnection=WARN\ncategory.UiHttpListener=ERROR\ncategory.TcpOutputProc=WARN\nappender.license_usage_maxBackupIndex=1\nappender.license_usage_summary.maxBackupIndex=1\nappender.metrics.maxBackupIndex=1\nappender.audittrail.maxBackupIndex=1\nappender.accesslog.maxBackupIndex=1\nappender.uiaccess.maxBackupIndex=1\nappender.scheduler.maxBackupIndex=1\nappender.remotesearches.maxBackupIndex=1\nappender.idata_ResourceUsage.maxBackupIndex=1\nappender.conf.maxBackupIndex=1\nappender.idata_DiskObjects.maxBackupIndex=1\nappender.idata_KVStore.maxBackupIndex=1\nappender.kvstore_appender.maxBackupIndex=1\nappender.idata_HttpEventCollector.maxBackupIndex=1\nappender.healthreporter.maxBackupIndex=1\nappender.watchdog_appender.maxBackupIndex=1' > $SPLUNK_HOME/etc/log-local.cfg
+  
+    # Disable monitoring console scheduled searches
+    mkdir $SPLUNK_HOME/etc/apps/splunk_monitoring_console/local
+    printf '[DMC Asset - Build Standalone Asset Table]\ndisabled = 1\n\n[DMC Asset - Build Standalone Computed Groups Only]\ndisabled = 1\n\n[DMC Asset - Build Full]\ndisabled = 1\n\n[DMC License Usage Data Cube]\ndisabled = 1' > $SPLUNK_HOME/etc/apps/splunk_monitoring_console/local/savedsearches.conf
+
+    ## Disable hadoop archiver scheduled search
+    mkdir $SPLUNK_HOME/etc/apps/splunk_archiver/local
+    printf '[Bucket Copy Trigger]\ndisabled = 1' > $SPLUNK_HOME/etc/apps/splunk_archiver/local/savedsearches.conf
   fi
 else
   echo "$FILE.tar.gz does not exist, was it correctly downloaded in the base image?"
