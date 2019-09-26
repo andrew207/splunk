@@ -16,7 +16,7 @@ Single instance with no persistence
 
 Single instance with indexed data and config/app persistence in unRAID
 
-`docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -v '/mnt/user/appdata/splunk/var/lib/splunk':'/opt/splunk/lib/splunk':'rw' -v '/mnt/user/appdata/splunk/etc':'/opt/splunk/etc':'rw' --name splunk atunnecliffe/splunk`
+`docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -v '/mnt/user/appdata/splunk/splunkdata':'/splunkdata':'rw' -v '/mnt/user/appdata/splunk/etc/apps':'/opt/splunk/etc/apps':'rw' --name splunk atunnecliffe/splunk`
 
 Install an older version (7.2.6) and change admin password
 
@@ -37,6 +37,10 @@ Sets the default "admin" user account password. Defaults to `changeme2019`. You 
 
 # Volumes
 
-`/apps`
+`/splunkdata`
 
-The contents of this directory is forcefully copied into /opt/splunk/etc/apps on container startup. Use this volume to place all your the apps you want pre-installed. 
+Contains Splunk's indexed data. This is configured in Splunk using the SPLUNK_DB directive in splunk-launch.conf, as written in the gosplunk.sh script.
+
+`/opt/splunk/etc/apps`
+
+Contains Splunk's apps and most customisations made in the GUI.  
