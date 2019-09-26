@@ -23,6 +23,9 @@ ENV ADMIN_PASSWORD $ADMIN_PASSWORD
 # Add Splunk to env
 ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=$SPLUNK_HOME
 
+# Add indexed data dir
+RUN mkdir -p /splunkdata
+
 # Prepare startup script
 WORKDIR ${SPLUNK_HOME}
 COPY gosplunk.sh ./gosplunk.sh
@@ -37,6 +40,9 @@ RUN FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
 	chgrp -R 0 ${SPLUNK_HOME} && \
     chmod -R g=u ${SPLUNK_HOME} && \
 	chmod -R 755 ${SPLUNK_HOME} && \
+	chgrp -R 0 /splunkdata && \
+    chmod -R g=u /splunkdata && \
+	chmod -R 755 /splunkdata && \
     chmod -R g=u /etc/passwd 
 
 # Install dependancies 
@@ -54,7 +60,7 @@ RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/s
     rm -f glicx-2.29-r0.apk
 
 # Set up ports and volumes
-VOLUME ["/apps", "${SPLUNK_HOME}"]
+VOLUME ["/apps", "${SPLUNK_HOME}", "/splunkdata"]
 EXPOSE 8000 8089 9997
  
 # Startup
