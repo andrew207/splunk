@@ -25,6 +25,9 @@ if test -f "$FILE.tar.gz"; then
     # Fix "unusable filesystem" when Splunkd tries to create files
 	# Set Splunk DB to volume directory
     printf "\nOPTIMISTIC_ABOUT_FILE_LOCKING = 1\nSPLUNK_DB=/splunkdata" >> $SPLUNK_HOME/etc/splunk-launch.conf
+	
+	# Move KVStore to non-persistent directory due to odd issues
+	printf "\n[kvstore]\ndbPath = $SPLUNK_HOME/var/lib/splunk/kvstore" >> $SPLUNK_HOME/etc/system/local/server.conf
 
     # Set admin password 
     printf '[user_info]\nUSERNAME = admin\nPASSWORD = %s' "$ADMIN_PASSWORD" > $SPLUNK_HOME/etc/system/local/user-seed.conf
