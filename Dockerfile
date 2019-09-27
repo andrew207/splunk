@@ -1,5 +1,5 @@
-# Grab base Phusion
-FROM phusion/baseimage:0.11
+# Grab base Alpine
+FROM alpine:3.10.2
 MAINTAINER atunnecliffe <andrew@atunnecliffe.com>
 
 # Set environment variables
@@ -10,36 +10,59 @@ ENV LC_ALL C.UTF-8
 ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB.UTF-8
 
-# Run baseimage init
-CMD ["/sbin/my_init"]
-
 # ARGS
-ARG DOWNLOAD_URL=https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.3.1&product=splunk&filename=splunk-7.3.1-bd63e13aa157-linux-2.6-amd64.deb&wget=true
+ARG DOWNLOAD_URL=https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.3.1.1&product=splunk&filename=splunk-7.3.1.1-7651b7244cf2-Linux-x86_64.tgz&wget=true
 ARG SPLUNK_CLI_ARGS="--accept-license --no-prompt"
 ARG ADMIN_PASSWORD=changeme2019
-ARG IS_UNRAID=false
 
 # ENVS based on ARGS (so you can configure either at build time or runtime)
 ENV DOWNLOAD_URL $DOWNLOAD_URL
 ENV SPLUNK_CLI_ARGS $SPLUNK_CLI_ARGS
 ENV ADMIN_PASSWORD $ADMIN_PASSWORD
-ENV IS_UNRAID $IS_UNRAID
 
-# Disable SSH
-RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
+# Add Splunk to env
+ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=$SPLUNK_HOME
 
-# Install wget
-RUN apt-get update -q
-RUN apt-get install -y wget
+# Add indexed data dir
+RUN mkdir -p /splunkdata
 
-# Set up autostarts
-RUN mkdir -p /etc/my_init.d
-COPY 50_gosplunk.init /etc/my_init.d/50_gosplunk.init
-RUN chmod +x /etc/my_init.d/50_gosplunk.init
+# Prepare startup script
+WORKDIR ${SPLUNK_HOME}
+COPY gosplunk.sh ./gosplunk.sh
+RUN chmod +x ./gosplunk.sh
 
-# Clean up APT
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Download Splunk and fix permissions
+# Configure user nobody to match unRAID's settings
+# Splunk expects users to have an entry in /etc/passwd, OpenShift doesn't generate this so we will create one. 
+# See additional code in entrypoint script for writing the file.	
+RUN FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
+    wget -q -O $SPLUNK_HOME/$FILE.tar.gz $DOWNLOAD_URL && \ 
+	chgrp -R 0 ${SPLUNK_HOME} && \
+    chmod -R g=u ${SPLUNK_HOME} && \
+	chmod -R 755 ${SPLUNK_HOME} && \
+	chgrp -R 0 /splunkdata && \
+    chmod -R g=u /splunkdata && \
+	chmod -R 755 /splunkdata && \
+    chmod -R g=u /etc/passwd 
+
+# Install dependancies 
+# wget: for downloading Splunk and dependancies
+# tar: for installing Splunk 
+# alpine-sdk: provides linkers/builders required to run Splunk 
+# ca-certificates: required to securely download modified glibc
+# procps: required as Splunk uses ps with non-busybox arguments
+RUN apk add --no-cache --virtual wget tar alpine-sdk ca-certificates procps
+
+# Install custom glibc builder compatible with Splunk
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk && \
+    apk add glibc-2.29-r0.apk && \
+    rm -f glicx-2.29-r0.apk
 
 # Set up ports and volumes
+VOLUME ["/apps", "${SPLUNK_HOME}", "/splunkdata"]
 EXPOSE 8000 8089 9997
-VOLUME ["/opt/splunk/var", "/opt/splunk/etc", "/data", "/apps"]
+ 
+# Startup
+WORKDIR ${SPLUNK_HOME}
+ENTRYPOINT [ "./gosplunk.sh" ]
