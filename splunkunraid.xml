@@ -55,12 +55,12 @@ Compatible with Splunk 7.1.0 and newer. </Description>
   </Networking>
   <Data>
     <Volume>
-      <HostDir>/mnt/user/appdata/splunk/splunkdata</HostDir>
+      <HostDir>/mnt/user/appdata/splunkenterprise/splunkdata</HostDir>
       <ContainerDir>/splunkdata</ContainerDir>
       <Mode>rw</Mode>
     </Volume>
 	<Volume>
-      <HostDir>/mnt/user/appdata/splunk/etc/apps</HostDir>
+      <HostDir>/mnt/user/appdata/splunkenterprise/etc/apps</HostDir>
       <ContainerDir>/opt/splunk/etc/apps</ContainerDir>
       <Mode>rw</Mode>
     </Volume>
@@ -79,9 +79,9 @@ Compatible with Splunk 7.1.0 and newer. </Description>
   </Environment>
   <Labels/>
   <Config Name="Web" Target="8000" Default="8000" Mode="tcp" Description="HTTP Web UI" Type="Port" Display="always" Required="true" Mask="false">8000</Config>
-  <Config Name="DataPersist" Target="/splunkdata" Default="/mnt/user/appdata/splunk/splunkdata" Mode="rw" Description="For indexed data persistence" Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="DataPersist" Target="/splunkdata" Default="/mnt/user/appdata/splunkenterprise/splunkdata" Mode="rw" Description="For indexed data persistence" Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="ConfigPersist" Target="/opt/splunk/etc/apps" Default="/mnt/user/appdata/splunkenterprise/etc/apps" Mode="rw" Description="For config and app data persistence" Type="Path" Display="always" Required="true" Mask="false"/>
   <Config Name="Splunk start args" Target="SPLUNK_CLI_ARGS" Default="--accept-license --no-prompt" Mode="" Description="Arguments to start Splunk with. " Type="Variable" Display="advanced" Required="true" Mask="false">--accept-license --no-prompt</Config>
-  <Config Name="ConfigPersist" Target="/opt/splunk/etc/apps" Default="/mnt/user/appdata/splunk/etc/apps" Mode="rw" Description="For config and app data persistence" Type="Path" Display="always" Required="true" Mask="false"/>
   <Config Name="Admin Password" Target="ADMIN_PASSWORD" Default="changeme2019" Mode="" Description="Splunk Web UI admin password." Type="Variable" Display="advanced" Required="true" Mask="true">changeme2019</Config>
   <Config Name="Management" Target="8089" Default="8089" Mode="tcp" Description="HTTPS API" Type="Port" Display="advanced" Required="false" Mask="false">8089</Config>
   <Config Name="Data Ingest" Target="9997" Default="9997" Mode="tcp" Description="SplunkTCP input" Type="Port" Display="advanced" Required="false" Mask="false">9997</Config>
