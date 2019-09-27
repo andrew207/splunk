@@ -37,12 +37,12 @@ RUN chmod +x ./gosplunk.sh
 # See additional code in entrypoint script for writing the file.	
 RUN FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
     wget -q -O $SPLUNK_HOME/$FILE.tar.gz $DOWNLOAD_URL && \ 
-	chgrp -R 0 ${SPLUNK_HOME} && \
+    chgrp -R 0 ${SPLUNK_HOME} && \
     chmod -R g=u ${SPLUNK_HOME} && \
-	chmod -R 755 ${SPLUNK_HOME} && \
-	chgrp -R 0 /splunkdata && \
+    chmod -R 755 ${SPLUNK_HOME} && \
+    chgrp -R 0 /splunkdata && \
     chmod -R g=u /splunkdata && \
-	chmod -R 755 /splunkdata && \
+    chmod -R 755 /splunkdata && \
     chmod -R g=u /etc/passwd 
 
 # Install dependancies 
