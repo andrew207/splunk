@@ -25,7 +25,7 @@ Install an older version (7.2.6) and change admin password
 # Arguments
 `DOWNLOAD_URL` 
 
-is a direct link to download the .DEB file of your desired release obtained from the "download via WGET" button on the website. This Dockerfile is compatible with versions newer than 7.1.1. Currently defaults to version 7.3.1. 
+OPTIONAL. is a direct link to download the .tgz file of your desired release obtained from the "download via WGET" button on the website. This Dockerfile is compatible with versions newer than 7.1.1. 
 
 `SPLUNK_CLI_ARGS` 
 
