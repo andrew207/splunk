@@ -32,6 +32,24 @@ What args do you want Splunk to start with every time it opens? Defaults to `--a
 
 Sets the default "admin" user account password. Defaults to `changeme2019`. You can change this through the web interface once the container is running. 
 
+# Ports
+
+`8000`
+
+HTTP Splunk web interface. Log in with the username `admin` and the value of `ADMIN_PASSWORD`, which defaults to `changeme2019`. 
+
+`9997`
+
+SplunkTCP data stream, for receiving Splunk indexed data from Splunk Forwarders.
+
+`8089`
+
+HTTPS management API, if you require external API access such as for Deployment Server functionality. 
+
+`514`
+
+Default Syslog port, if you decide to syslog directly to Splunk rather than the preferred method of monitoring files written by syslog-ng or similar. 
+
 # Volumes
 
 `/splunkdata`
