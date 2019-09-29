@@ -11,12 +11,12 @@ ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB.UTF-8
 
 # ARGS
-ARG DOWNLOAD_URL=https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.3.1.1&product=splunk&filename=splunk-7.3.1.1-7651b7244cf2-Linux-x86_64.tgz&wget=true
+ARG DOWNLOAD_TARGET=https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.3.1.1&product=splunk&filename=splunk-7.3.1.1-7651b7244cf2-Linux-x86_64.tgz&wget=true
 ARG SPLUNK_CLI_ARGS="--accept-license --no-prompt"
 ARG ADMIN_PASSWORD=changeme2019
 
 # ENVS based on ARGS (so you can configure either at build time or runtime)
-ENV DOWNLOAD_URL $DOWNLOAD_URL
+ENV DOWNLOAD_TARGET $DOWNLOAD_TARGET
 ENV SPLUNK_CLI_ARGS $SPLUNK_CLI_ARGS
 ENV ADMIN_PASSWORD $ADMIN_PASSWORD
 
@@ -35,7 +35,7 @@ RUN chmod +x ./gosplunk.sh
 # Configure user nobody to match unRAID's settings
 # Splunk expects users to have an entry in /etc/passwd, OpenShift doesn't generate this so we will create one. 
 # See additional code in entrypoint script for writing the file.	
-RUN FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
+RUN FILE=`echo $DOWNLOAD_TARGET | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
     wget -q -O $SPLUNK_HOME/$FILE.tar.gz $DOWNLOAD_URL && \ 
     chgrp -R 0 ${SPLUNK_HOME} && \
     chmod -R g=u ${SPLUNK_HOME} && \
