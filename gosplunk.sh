@@ -9,7 +9,7 @@ fi
 exec "$@"
 
 # If Splunk is not installed, install it
-FILE=`echo $DOWNLOAD_URL | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'`
+FILE=`echo $DOWNLOAD_TARGET | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'`
 if test -f "$FILE.tar.gz"; then
   echo "$FILE.tar.gz exists, no need to download again."
   if test -f "$SPLUNK_HOME/bin/splunk"; then
