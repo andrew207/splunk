@@ -23,9 +23,6 @@ Install an older version (7.2.6) and change admin password
 `docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -e ADMIN_PASSWORD="mynewpassword" -e DOWNLOAD_URL="https://www.splunk.com/page/download_track?file=7.2.6/linux/splunk-7.2.6-c0bf0f679ce9-Linux-x86_64.tgz&ac=&wget=true&name=wget&platform=Linux&architecture=x86_64&version=7.2.6&product=splunk&typed=release" -p 8000:8000 --name splunk atunnecliffe/splunk`
 
 # Arguments
-`DOWNLOAD_URL` 
-
-OPTIONAL. is a direct link to download the .tgz file of your desired release obtained from the "download via WGET" button on the website. This Dockerfile is compatible with versions newer than 7.1.1. 
 
 `SPLUNK_CLI_ARGS` 
 
