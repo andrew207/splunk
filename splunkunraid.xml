@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Container version="2">
   <Name>splunk</Name>
-  <Repository>atunnecliffe/splunk:openshift</Repository>
+  <Repository>atunnecliffe/splunk</Repository>
   <Registry>https://hub.docker.com/r/atunnecliffe/splunk</Registry>
   <Network>bridge</Network>
   <MyIP/>
