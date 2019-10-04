@@ -46,6 +46,10 @@ SplunkTCP data stream, for receiving Splunk indexed data from Splunk Forwarders.
 
 HTTPS management API, if you require external API access such as for Deployment Server functionality. 
 
+`8088`
+
+Splunk HTTP Event Collector default port, for receiving Splunk HEC events (such as those sent by Splunk Stream).
+
 `514`
 
 Default Syslog port, if you decide to syslog directly to Splunk rather than the preferred method of monitoring files written by syslog-ng or similar. 

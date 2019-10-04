@@ -61,7 +61,7 @@ RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/s
 
 # Set up ports and volumes
 VOLUME ["/apps", "${SPLUNK_HOME}", "/splunkdata"]
-EXPOSE 8000 8089 9997 514
+EXPOSE 8000 8089 9997 8088 514
  
 # Startup
 WORKDIR ${SPLUNK_HOME}
