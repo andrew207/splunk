@@ -11,9 +11,9 @@
   <Project>https://www.splunk.com/</Project>
   <Overview>This is a Dockerfile for Splunk designed for OpenShift and unRAID based on Alpine Linux - https://www.splunk.com&#xD;
 &#xD;
-If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.3.1.1 with the user admin:changeme2019.&#xD;
+If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.2 with the user admin:changeme2019.&#xD;
 &#xD;
-It is designed to deploy Splunk and auto-install any custom apps you want through a volume. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089.&#xD;
+The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089.&#xD;
 &#xD;
 Compatible with Splunk 7.1.0 and newer. </Overview>
   <Category>Tools:Utilities Network:Management Status:Stable</Category>
@@ -28,9 +28,9 @@ Compatible with Splunk 7.1.0 and newer. </Overview>
   <DonateLink>https://paypal.me/atunnecliffe</DonateLink>
   <Description>This is a Dockerfile for Splunk designed for OpenShift and unRAID based on Alpine Linux - https://www.splunk.com&#xD;
 &#xD;
-If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.3.1.1 with the user admin:changeme2019.&#xD;
+If you run the Dockerfile with no arguments you will get a single instance of Splunk 7.3.2 with the user admin:changeme2019.&#xD;
 &#xD;
-It is designed to deploy Splunk and auto-install any custom apps you want through a volume. The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089.&#xD;
+The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API on HTTPS/8089.&#xD;
 &#xD;
 Compatible with Splunk 7.1.0 and newer. </Description>
   <Networking>
