@@ -36,7 +36,7 @@ RUN chmod +x ./gosplunk.sh
 # Splunk expects users to have an entry in /etc/passwd, OpenShift doesn't generate this so we will create one. 
 # See additional code in entrypoint script for writing the file.	
 RUN FILE=`echo $DOWNLOAD_TARGET | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
-    wget -q -O $SPLUNK_HOME/$FILE.tar.gz $DOWNLOAD_URL && \ 
+    wget -q -O $SPLUNK_HOME/$FILE.tar.gz $DOWNLOAD_TARGET && \ 
     chgrp -R 0 ${SPLUNK_HOME} && \
     chmod -R g=u ${SPLUNK_HOME} && \
     chmod -R 755 ${SPLUNK_HOME} && \
