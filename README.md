@@ -66,6 +66,6 @@ Contains Splunk's apps and most customisations made in the GUI.
 
 # Known Issues
 
-`Unable to run apps that contain binary modular inputs (like Splunk_TA_Stream) when my $SPLUNK_HOME/etc/apps directory is a volume`
+`Sometimes unable to run apps that contain binary modular inputs (like Splunk_TA_Stream) when my $SPLUNK_HOME/etc/apps directory is a volume. Executable shell scripts still work though.`
 
-This is due to the use of the `SYS_RAWIO` capability that is natively disallowed by Docker as a security measure. To get around this, you can run the container in "privileged mode", `--privileged` or there's a checkbox in your unRAID update container screen. The alternative would be only volumising the /local subdirectories of your apps. 
+This is due to the use of the `SYS_RAWIO` capability that is natively disallowed by Docker as a security measure. To get around this, you can run the container in "privileged mode", `--privileged` or there's a checkbox in your unRAID update container screen. The alternative would be only volumising the /local subdirectories of your apps.
