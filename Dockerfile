@@ -1,6 +1,6 @@
 # Grab base Alpine
 FROM alpine:3.10.2
-MAINTAINER atunnecliffe <andrew@atunnecliffe.com>
+MAINTAINER TwoD <ToddMKieffer@gmail.com>
 
 # Set environment variables
 ENV HOME /root
@@ -15,11 +15,13 @@ ENV LANGUAGE en_GB.UTF-8
 ARG DOWNLOAD_TARGET=https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=8.0.0&product=splunk&filename=splunk-8.0.0-1357bef0a7f6-Linux-x86_64.tgz&wget=true
 ARG SPLUNK_CLI_ARGS="--accept-license --no-prompt"
 ARG ADMIN_PASSWORD=changeme2019
+ARG PORT_SYSLOG=1514
 
 # ENVS based on ARGS (so you can configure either at build time or runtime)
 ENV DOWNLOAD_TARGET $DOWNLOAD_TARGET
 ENV SPLUNK_CLI_ARGS $SPLUNK_CLI_ARGS
 ENV ADMIN_PASSWORD $ADMIN_PASSWORD
+ENV PORT_SYSLOG $PORT_SYSLOG
 
 # Add Splunk to env
 ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=$SPLUNK_HOME
@@ -62,7 +64,7 @@ RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/s
 
 # Set up ports and volumes
 VOLUME ["/apps", "${SPLUNK_HOME}", "/splunkdata"]
-EXPOSE 8000 8089 9997 8088 514
+EXPOSE 8000 8089 9997 8088 $PORT_SYSLOG
  
 # Startup
 WORKDIR ${SPLUNK_HOME}
