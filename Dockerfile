@@ -52,7 +52,8 @@ RUN FILE=`echo $DOWNLOAD_TARGET | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
 # alpine-sdk: provides linkers/builders required to run Splunk 
 # ca-certificates: required to securely download modified glibc
 # procps: required as Splunk uses ps with non-busybox arguments
-RUN apk add --no-cache --virtual wget tar alpine-sdk ca-certificates procps
+# tar: required as busybox tar doesn't support features required starting with Splunk 8.0.1. 
+RUN apk add --no-cache --virtual wget tar alpine-sdk ca-certificates procps tar
 
 # Install custom glibc builder compatible with Splunk
 RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
