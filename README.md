@@ -66,7 +66,13 @@ Contains Splunk's apps and most customisations made in the GUI.
 
 # How to reset trial license
 
-Delete all your internal indexes `_*` from disk, then delete your docker image and redownload it. For unRAID users you can swap between `:latest` and `:version`, e.g. branches to force a redownload of the base image. `latest`/`master` will always have a corresponding `:version` available in DockerHub. 
+* Delete all default indexes from disk
+* Delete all default apps from volumes
+* Delete your docker image and redownload it. 
+
+For unRAID users you can swap between `:latest` and `:version`, e.g. branches to force a redownload of the base image. `latest`/`master` will always have a corresponding `:version` available in DockerHub. 
+
+You probably don't have to do all these things, but I've found it works consistently. 
 
 # Known Issues
 
