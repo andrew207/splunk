@@ -64,6 +64,10 @@ Contains Splunk's indexed data. This is configured in Splunk using the SPLUNK_DB
 
 Contains Splunk's apps and most customisations made in the GUI.  
 
+# How to reset trial license
+
+Delete all your internal indexes `_*` from disk, then delete your docker image and redownload it. For unRAID users you can swap between `:latest` and `:version`, e.g. branches to force a redownload of the base image. `latest`/`master` will always have a corresponding `:version` available in DockerHub. 
+
 # Known Issues
 
 `Sometimes unable to run apps that contain binary modular inputs (like Splunk_TA_Stream) when my $SPLUNK_HOME/etc/apps directory is a volume. Executable shell scripts still work though.`
