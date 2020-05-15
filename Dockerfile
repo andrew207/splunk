@@ -14,11 +14,13 @@ ENV LANGUAGE en_GB.UTF-8
 ARG DOWNLOAD_TARGET=https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=8.0.3&product=splunk&filename=splunk-8.0.3-a6754d8441bf-Linux-x86_64.tgz&wget=true
 ARG SPLUNK_CLI_ARGS="--accept-license --no-prompt"
 ARG ADMIN_PASSWORD=changeme2019
+ARG TZ=Etc/UTC
 
 # ENVS based on ARGS (so you can configure either at build time or runtime)
 ENV DOWNLOAD_TARGET $DOWNLOAD_TARGET
 ENV SPLUNK_CLI_ARGS $SPLUNK_CLI_ARGS
 ENV ADMIN_PASSWORD $ADMIN_PASSWORD
+ENV TZ=$TZ
 
 # Add Splunk to env
 ENV PATH=${SPLUNK_HOME}/bin:${PATH} HOME=$SPLUNK_HOME
@@ -51,7 +53,8 @@ RUN FILE=`echo $DOWNLOAD_TARGET | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
 # alpine-sdk: provides linkers/builders required to run Splunk 
 # ca-certificates: required to securely download modified glibc
 # procps: required as Splunk uses ps with non-busybox arguments
-RUN apk add --no-cache --virtual wget tar alpine-sdk ca-certificates procps
+# tzdata: required to set timezone
+RUN apk add --no-cache --virtual wget tar alpine-sdk ca-certificates procps tzdata
 
 # Install custom glibc builder compatible with Splunk
 RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
