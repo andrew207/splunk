@@ -8,6 +8,9 @@ if ! whoami &> /dev/null; then
 fi
 exec "$@"
 
+# Set timezone
+cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ >/etc/timezone
+
 # If Splunk is not installed, install it
 FILE=`echo $DOWNLOAD_TARGET | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'`
 if test -f "$FILE.tar.gz"; then
