@@ -9,6 +9,8 @@ If you run the Dockerfile with no arguments you will get a single instance of Sp
 
 Compatible with Splunk 7.1.0 and newer. 
 
+Be careful with your volumes as this container can get BIG. Make sure you make (at minimum) `/splunkdata` a volume to alleviate this if you're using the container for any extended amount of time.
+
 # Usage
 Single instance with no persistence 
 
