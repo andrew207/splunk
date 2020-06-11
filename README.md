@@ -72,7 +72,7 @@ Contains Splunk's apps and most customisations made in the GUI.
 * Delete all default apps from volumes
 * Delete your docker image and redownload it. 
 
-For unRAID users you can swap between `:latest` and `:version`, e.g. branches to force a redownload of the base image. `latest`/`master` will always have a corresponding `:version` available in DockerHub. 
+For unRAID users you can swap between `:latest` and (`:<version>` such as `:8.0.2`) branches to force a redownload of the base image. Every version from 8.0.0 has a corresponding version available by directly hard-coding a branch. 
 
 You probably don't have to do all these things, but I've found it works consistently. 
 
