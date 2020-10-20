@@ -59,9 +59,14 @@ Compatible with Splunk 7.1.0 and newer. </Description>
       <ContainerDir>/splunkdata</ContainerDir>
       <Mode>rw</Mode>
     </Volume>
-	<Volume>
+	  <Volume>
       <HostDir>/mnt/user/appdata/splunkenterprise/etc/apps</HostDir>
       <ContainerDir>/opt/splunk/etc/apps</ContainerDir>
+      <Mode>rw</Mode>
+    </Volume>
+    <Volume>
+      <HostDir>/mnt/user/appdata/splunkenterprise/etc/auth</HostDir>
+      <ContainerDir>/opt/splunk/etc/auth</ContainerDir>
       <Mode>rw</Mode>
     </Volume>
   </Data>
@@ -81,6 +86,7 @@ Compatible with Splunk 7.1.0 and newer. </Description>
   <Config Name="Web" Target="8000" Default="8000" Mode="tcp" Description="HTTP Web UI" Type="Port" Display="always" Required="true" Mask="false">8000</Config>
   <Config Name="DataPersist" Target="/splunkdata" Default="/mnt/user/appdata/splunkenterprise/splunkdata" Mode="rw" Description="For indexed data persistence" Type="Path" Display="always" Required="true" Mask="false"/>
   <Config Name="ConfigPersist" Target="/opt/splunk/etc/apps" Default="/mnt/user/appdata/splunkenterprise/etc/apps" Mode="rw" Description="For config and app data persistence" Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="AppCredsPersist" Target="/opt/splunk/etc/auth" Default="/mnt/user/appdata/splunkenterprise/etc/auth" Mode="rw" Description="For password/encryption persistence" Type="Path" Display="always" Required="true" Mask="false"/>
   <Config Name="Splunk start args" Target="SPLUNK_CLI_ARGS" Default="--accept-license --no-prompt" Mode="" Description="Arguments to start Splunk with. " Type="Variable" Display="advanced" Required="true" Mask="false">--accept-license --no-prompt</Config>
   <Config Name="Admin Password" Target="ADMIN_PASSWORD" Default="changeme2019" Mode="" Description="Splunk Web UI admin password." Type="Variable" Display="advanced" Required="true" Mask="true">changeme2019</Config>
   <Config Name="Management" Target="8089" Default="8089" Mode="tcp" Description="HTTPS API" Type="Port" Display="advanced" Required="false" Mask="false">8089</Config>
