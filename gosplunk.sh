@@ -48,7 +48,8 @@ if test -f "$FILE.tar.gz"; then
     printf '[Bucket Copy Trigger]\ndisabled = 1' > $SPLUNK_HOME/etc/apps/splunk_archiver/local/savedsearches.conf
   fi
 else
-  echo "$FILE.tar.gz does not exist, was it correctly downloaded in the base image?"
+  echo "$FILE.tar.gz does not exist, was it correctly downloaded in the base image? Killing container..."
+  exit 1
 fi
 
 echo "Starting Splunkd..."
