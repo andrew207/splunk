@@ -46,6 +46,10 @@ if test -f "$FILE.tar.gz"; then
     ## Disable hadoop archiver scheduled search
     mkdir $SPLUNK_HOME/etc/apps/splunk_archiver/local
     printf '[Bucket Copy Trigger]\ndisabled = 1' > $SPLUNK_HOME/etc/apps/splunk_archiver/local/savedsearches.conf
+
+    ## Disable journald input as it's not relevant to our OS
+    mkdir $SPLUNK_HOME/etc/apps/journald_input/local
+    printf '[journald]\ndisabled = 1' > $SPLUNK_HOME/etc/apps/journald_input/local/inputs.conf
   fi
 else
   echo "$FILE.tar.gz does not exist, was it correctly downloaded in the base image? Killing container..."
