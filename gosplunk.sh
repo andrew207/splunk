@@ -50,6 +50,7 @@ if test -f "$FILE.tar.gz"; then
     ## Disable journald input as it's not relevant to our OS
     mkdir $SPLUNK_HOME/etc/apps/journald_input/local
     printf '[journald]\ndisabled = 1' > $SPLUNK_HOME/etc/apps/journald_input/local/inputs.conf
+    printf '[install]\nstate = disabled' > $SPLUNK_HOME/etc/apps/journald_input/local/app.conf
   fi
 else
   echo "$FILE.tar.gz does not exist, was it correctly downloaded in the base image? Killing container..."
