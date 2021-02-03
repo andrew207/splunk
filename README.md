@@ -1,5 +1,5 @@
 # Splunk 
-This is a Dockerfile for Splunk, currently running version 8.1.0 - https://www.splunk.com
+This is a Dockerfile for Splunk, currently running version 8.1.2 - https://www.splunk.com
 
 It is based on Alpine Linux and supports OpenShift and unRAID.
 
