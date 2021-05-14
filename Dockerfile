@@ -11,7 +11,7 @@ ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB.UTF-8
 
 # ARGS
-ARG DOWNLOAD_TARGET=https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=8.1.3&product=splunk&filename=splunk-8.1.3-63079c59e632-Linux-x86_64.tgz&wget=true
+ARG DOWNLOAD_TARGET=https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=8.2.0&product=splunk&filename=splunk-8.2.0-e053ef3c985f-Linux-x86_64.tgz&wget=true
 ARG SPLUNK_CLI_ARGS="--accept-license --no-prompt"
 ARG ADMIN_PASSWORD=changeme2019
 ARG TZ=Etc/UTC
