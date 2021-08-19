@@ -1,5 +1,5 @@
 # Splunk 
-This is a Dockerfile for Splunk, currently running version 8.2.1 - https://www.splunk.com
+This is a Dockerfile for Splunk, currently running version 8.2.2 - https://www.splunk.com
 
 It is based on Alpine Linux and supports OpenShift and unRAID.
 
@@ -22,7 +22,7 @@ Single instance with indexed data and config/app persistence in unRAID
 
 Install an older version (7.2.6) and change admin password
 
-`docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -e ADMIN_PASSWORD="mynewpassword" -e DOWNLOAD_URL="https://www.splunk.com/page/download_track?file=7.2.6/linux/splunk-7.2.6-c0bf0f679ce9-Linux-x86_64.tgz&ac=&wget=true&name=wget&platform=Linux&architecture=x86_64&version=7.2.6&product=splunk&typed=release" -p 8000:8000 --name splunk atunnecliffe/splunk`
+`docker run -d -p 8000:8000 -p 8089:8089 -p 9997:9997 -e ADMIN_PASSWORD="mynewpassword" -e DOWNLOAD_TARGET="https://www.splunk.com/page/download_track?file=7.2.6/linux/splunk-7.2.6-c0bf0f679ce9-Linux-x86_64.tgz&ac=&wget=true&name=wget&platform=Linux&architecture=x86_64&version=7.2.6&product=splunk&typed=release" -p 8000:8000 --name splunk atunnecliffe/splunk`
 
 # Arguments
 
