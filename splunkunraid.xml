@@ -17,7 +17,7 @@ The web interface is exposed on port HTTP/8000, data ingest on TCP/9997, and API
 &#xD;
 Compatible with Splunk 7.1.0 and newer. </Overview>
   <Category>Tools:Utilities Network:Management Status:Stable</Category>
-  <WebUI>http://[IP]:[PORT:8000}</WebUI>
+  <WebUI>http://[IP]:[PORT:8000]</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/andrew207/splunk/master/splunkunraid.xml</TemplateURL>
   <Icon>https://secure.gravatar.com/avatar/c4cadc82a16e67018f57f1fc2547caa4.jpg</Icon>
   <ExtraParams/>
