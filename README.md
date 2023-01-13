@@ -1,5 +1,7 @@
 # Splunk 
-This is a Dockerfile for Splunk, currently running version 9.0.0 - https://www.splunk.com
+This is a Dockerfile for Splunk, currently running version 9.0.3 - https://www.splunk.com
+
+Default admin password is `changeme2019`.
 
 It is based on Alpine Linux and supports OpenShift and unRAID.
 
