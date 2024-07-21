@@ -1,5 +1,5 @@
 # Grab base Alpine
-FROM alpine:3.17.1
+FROM alpine:3.20.1
 LABEL author="atunnecliffe <andrew@atunnecliffe.com>"
 
 # Set environment variables
