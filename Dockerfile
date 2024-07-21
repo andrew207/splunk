@@ -1,5 +1,5 @@
-# Grab base Alpine
-FROM alpine:3.20.1
+# Grab base Ubuntu
+FROM ubuntu:24.04
 LABEL author="atunnecliffe <andrew@atunnecliffe.com>"
 
 # Set environment variables
@@ -33,34 +33,21 @@ WORKDIR ${SPLUNK_HOME}
 COPY gosplunk.sh ./gosplunk.sh
 RUN chmod +x ./gosplunk.sh
 
+# Download requirements
+RUN apt-get update && \
+    apt-get install -y wget 
+
 # Download Splunk and fix permissions
 # Configure user nobody to match unRAID's settings
 # Splunk expects users to have an entry in /etc/passwd, OpenShift doesn't generate this so we will create one. 
 # See additional code in entrypoint script for writing the file.	
-RUN FILE=`echo $DOWNLOAD_TARGET | sed -r 's/^.+(splunk-[^-]+).+$/\1/g'` && \
-    wget -q -O $SPLUNK_HOME/$FILE.tar.gz $DOWNLOAD_TARGET && \ 
-    chgrp -R 0 ${SPLUNK_HOME} && \
+RUN chgrp -R 0 ${SPLUNK_HOME} && \
     chmod -R g=u ${SPLUNK_HOME} && \
     chmod -R 755 ${SPLUNK_HOME} && \
     chgrp -R 0 /splunkdata && \
     chmod -R g=u /splunkdata && \
     chmod -R 755 /splunkdata && \
     chmod -R g=u /etc/passwd 
-
-# Install dependancies 
-# wget: for downloading Splunk and dependancies
-# tar: for installing Splunk 
-# alpine-sdk: provides linkers/builders required to run Splunk 
-# ca-certificates: required to securely download modified glibc
-# procps: required as Splunk uses ps with non-busybox arguments
-# tzdata: required to set timezone
-RUN apk add --no-cache --virtual wget tar alpine-sdk ca-certificates procps tzdata
-
-# Install custom glibc builder compatible with Splunk
-RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.35-r1/glibc-2.35-r1.apk && \
-    apk add glibc-2.35-r1.apk && \
-    rm -f glibc-2.35-r1.apk
 
 # Set up ports and volumes
 VOLUME ["/apps", "${SPLUNK_HOME}", "/splunkdata"]
