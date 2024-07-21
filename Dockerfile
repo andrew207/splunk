@@ -11,7 +11,7 @@ ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB.UTF-8
 
 # ARGS
-ARG DOWNLOAD_TARGET=https://download.splunk.com/products/splunk/releases/9.0.3/linux/splunk-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz
+ARG DOWNLOAD_TARGET=https://download.splunk.com/products/splunk/releases/9.2.2/linux/splunk-9.2.2-d76edf6f0a15-Linux-x86_64.tgz
 ARG SPLUNK_CLI_ARGS="--accept-license --no-prompt"
 ARG ADMIN_PASSWORD=changeme2019
 ARG TZ=Etc/UTC
@@ -58,9 +58,9 @@ RUN apk add --no-cache --virtual wget tar alpine-sdk ca-certificates procps tzda
 
 # Install custom glibc builder compatible with Splunk
 RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk && \
-    apk add glibc-2.29-r0.apk && \
-    rm -f glibc-2.29-r0.apk
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.35-r1/glibc-2.35-r1.apk && \
+    apk add glibc-2.35-r1.apk && \
+    rm -f glibc-2.35-r1.apk
 
 # Set up ports and volumes
 VOLUME ["/apps", "${SPLUNK_HOME}", "/splunkdata"]
