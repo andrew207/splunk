@@ -1,5 +1,5 @@
 # Splunk 
-This is a Dockerfile for Splunk, currently running version 9.0.3 - https://www.splunk.com
+This is a Dockerfile for Splunk, currently running version 10.4.3 - https://www.splunk.com
 
 Default admin password is `changeme2019`.
 

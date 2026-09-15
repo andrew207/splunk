@@ -11,7 +11,7 @@ ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB.UTF-8
 
 # ARGS
-ARG DOWNLOAD_TARGET=https://download.splunk.com/products/splunk/releases/9.0.3/linux/splunk-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz
+ARG DOWNLOAD_TARGET=https://download.splunk.com/products/splunk/releases/10.4.3/linux/splunk-10.4.3-4174a2deda5d-linux-amd64.tgz
 ARG SPLUNK_CLI_ARGS="--accept-license --no-prompt"
 ARG ADMIN_PASSWORD=changeme2019
 ARG TZ=Etc/UTC
